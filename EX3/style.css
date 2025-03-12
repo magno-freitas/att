@@ -1,0 +1,19 @@
+/* Utilize o exercício 3 da lista de HTML e crie um arquivo style.css. Linque o arquivo css
+ao arquivo html. Dentro do arquivo style.css
+a) Altere a cor do título para azul
+b) Altere a cor do parágrafo para cinza
+c) Defina a cor azul de fundo para o header
+d) Defina a cor verde de fundo para o footer */
+
+h1{
+    color: blue;
+}
+p{
+    color: gray;
+}
+header{
+    background-color: blue;
+}
+footer{
+    background-color: green;
+}

@@ -1,0 +1,27 @@
+body {
+    background-color: #dbdbdb;
+    font-family: Arial, sans-serif;
+    color: #000000;
+}
+
+h1 {
+    color: #6f9fcf;
+}
+
+span {
+    color: #e74c3c;
+}
+
+ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+li {
+    color: #3498db;
+}
+.card{
+width: 300px;
+height: 30vh;
+background-color:aqua;
+}
