@@ -24,7 +24,90 @@ especiais -->
     <link rel="stylesheet" href="style.css">
     <h1><strong>Restaurante do Magno</strong></h1>
     <p><strong>Restaurante do Magno é um restaurante que serve pratos tradicionais brasileiros. O restaurante é conhecido por sua feijoada e moqueca de peixe.</strong></p>
-
+    <style>
+    body{
+        font-family: arial, sans-serif;;
+        margin: 0 auto;
+        padding: 20px;
+        max-width: 800px;
+        background-color: rgba(119, 114, 100, 0.199);
+        
+    }
+    h1{
+        color: rgb(165,42,42);
+        text-align: center;
+        border-bottom: 3px solid rgb(165,42,42);
+        padding-bottom: 10px;
+    }
+    p{
+        color: rgb(51,51,51);
+        line-height: 1.6;
+        text-align: center;
+        margin: 20px 0;
+    } table{
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        border: 1px solid rgb(128, 116, 116);
+    }th{
+        background-color: rgb(165,42,42);
+        color: rgb(255,255,255);
+        padding: 12px;
+        text-align: left;
+        list-style-position: inside;
+    }td{
+        padding: 12px;
+        border-bottom: 1px solid rgb(255, 255, 255);
+        background-color: rgb(255,255,238);
+        list-style-position: inside;
+        border-bottom:2px solid rgb(165,42,42);
+    }
+    tr:nth-child(even){   /*essa linha faz com que a selecao escureca ao passar o mouse*/
+        background-color: rgb(255,255,238);
+    }tr:child(odd){
+        background-color: rgb(255,255,255);
+    
+    }tr:hover{
+        background-color: rgb(255,228,196);
+    }ul{
+        list-style-type: style type;;
+        list-style-position: inside;
+        margin: 20px 0;
+        padding: 0;
+        border-bottom:1px solid rgb(165,42,42);
+        
+    }li{
+        background-color: rgb(255,245,238);
+        margin: 5px 0;
+        padding: 10px;
+        border-left: 3px solid rgb(165,42,42);
+        border-bottom:1px solid rgb(165,42,42);
+        text-align: left;
+        padding-left: 20px;
+        
+        
+    }img{
+        max-width: 100%;
+        height: 200px;
+        display: block;
+        margin: 20px auto;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }footer{
+        text-align: center;
+        margin-top: 30px;
+        padding: 20px;
+        background-color: rgb(165,42,42);
+        color:rgb(255,255,255);
+        border:1px solid rgb(15, 15, 15);
+    }footer a {
+        color: rgb(255,255,255);
+        text-decoration: none;
+        margin: 0 10px;
+    }footer a:hover{
+        text-decoration: underline;
+    }
+</style>   
 </head>
 <body>
     <table>
