@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: #dbdbdb;
+            font-family: Arial, sans-serif;
+            color: #333333;
+            line-height: 1.6;
+        } header{
+            background-color: #6f9fcf;
+            color: #ffffff;
+            text-align: center;
+            padding: 2rem;
+        } .hero{
+            background-color: #f2f2f2;
+            color: #ffffff;
+            text-align: center;
+            padding: 4rem 2rem;
+        } .features{
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+            text-align: center;
+        } .feature-grid{
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        } .cta-section{
+            background-color: #f2f2f2;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .cta-button{
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: #6f9fcf;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        } .cta-button:hover{
+            background-color: #555;
+        } .price{
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin: 1rem 0;
+        } @media (max-widrg:768px){
+            .feature-grid{
+                grid-template-columns: 1fr;
+            }
+        }
+        h1{
+            color: #6f9fcf;
+        }
+        p{
+            color: #e74c3c;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+    <h1>Novo Smartphone</h1>
+    <p>A tecnologia do futuro em suas mãos</p>
+</header>
+
+<section class="hero">
+    <h2>Oferta Exclusiva</h2>
+    <p>Aproveite30% de Desconto</p>
+    <div>class="price">$999</div>
+    <p><strong>Apenas por tempo limitado!</strong></p>
+    <a href="#comprar" class="cta-button">QUERO APROVEITAR</a>
+    </section>
+
+    <section class="features">
+        <h2>Principais Características</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>Cameras Profissionais</h3>
+                <p>Alta qualidade de imagem e video</p>
+            </div>
+            <div class="feature">
+                <h3>Bateria Duradoura</h3>
+                <p>Até 2 dias de duração com uso moderado</p>
+            </div>
+            <div class="feature">
+                <h3>5G Ultra-rápido</h3>
+                <p>Navegue e baixe arquivos em velocidade máxima</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Não perca esta oferta!</h2>
+        <p>Promoção válida apenas hoje</p>
+        <a href="#comprar" class="cta-button">GARANTIR MEU SMARTPHONE</a>
+    </section>
+    <section class="form-section" id="form">
+        <h2>Garanta já o seu!</h2>
+        <p>Preencha seus dados para garantir esta oferta exclusiva</p>
+        <form action="#" method="POST">
+            <div class="form-group">
+                <label for="nome">Nome completo:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone:</label>
+                <input type="tel" id="telefone" name="telefone" required>
+            </div>
+            <button type="submit" class="cta-button">GARANTIR MINHA OFERTA</button>
+        </form>
+    </section>
+
+    <section class="cta-section">
+        <h2>Não perca esta oferta!</h2>
+        <p>⚠️ Promoção válida apenas hoje</p>
+        <p>🔥 Últimas unidades disponíveis</p>
+        <a href="#form" class="cta-button">GARANTIR MEU SMARTPHONE</a>
+    </section>
+</body>
+</html>
+<!-- É uma página criada especificamente para uma
+campanha de marketing ou publicidade, onde os
+visitantes "aterrissam" após clicarem em um link em
+um post de rede social
+• Altamente focado em um produto, serviço ou oferta
+específica, com opções de navegação mínimas
+• Geralmente inclui uma chamada clara para a ação (call to action), como
+preencher um formulário, fazer uma compra, baixar um recurso
+Agora:
+• Faça uma Landing Page -->
