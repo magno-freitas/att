@@ -13,6 +13,13 @@ public class Contribuinte {
         this.calcularImposto();
     }
 
+    public void setRendaAnual(double rendaAnual) {
+        if(rendaAnual <= 0) {
+            throw new IllegalArgumentException("Renda anual Invalida");
+        }
+        this.rendaAnual = rendaAnual;
+    }
+
     private void calcularImposto() {
         double aliquota;
         
@@ -22,7 +29,7 @@ public class Contribuinte {
             aliquota = 0.058;
         } else if (rendaAnual <= 25000) {
             aliquota = 0.15;
-        } else if (rendaAnual <= 35000) {
+        } else   if (rendaAnual <= 35000) {
             aliquota = 0.275;
         } else {
             aliquota = 0.30;
@@ -44,4 +51,6 @@ public class Contribuinte {
         return String.format("Nome: %s, CPF: %s, UF: %s, Renda Anual: R$%.2f, Imposto: R$%.2f",
                 nome, cpf, uf, rendaAnual, impostoAPagar);
     }
+
+    
 }
