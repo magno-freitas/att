@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import vet.model.Appointment;
+import vet.util.DatabaseConnection;
+
 public class PriceService {
     public void setServicePrice(ServiceType serviceType, double price) throws SQLException {
         String query = "INSERT INTO service_prices (service_type, price) VALUES (?, ?) " +

@@ -4,6 +4,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.Part;
+
+import com.mysql.cj.xdevapi.Client;
+
+import vet.model.Appointment;
+import vet.service.EmailService;
+import vet.util.DatabaseConnection;
+
 public class NotificationService {
     private EmailService emailService;
     private SMSService smsService;
@@ -13,6 +21,10 @@ public class NotificationService {
         this.smsService = new SMSService();
     }
     
+    public NotificationService(EmailService emailService2, SMSService smsService2) {
+        //TODO Auto-generated constructor stub
+    }
+
     public void sendAppointmentReminder(Appointment appointment, Client client) {
         String message = String.format(
             "Lembrete: Você tem um agendamento para %s em %s para o pet %s.",
@@ -29,11 +41,11 @@ public class NotificationService {
         logNotification(appointment.getAppointmentId(), "REMINDER", message);
     }
     
-    public void sendVaccinationDueReminder(Pet pet, Client client, String vaccineName) {
+    public void sendVaccinationDueReminder(Part pet, Client client, String vaccineName) {
         String message = String.format(
             "Olá! A vacina %s do seu pet %s está próxima do vencimento. Por favor, agende uma visita.",
             vaccineName,
-            pet.getName()
+            pet.getFileName()
         );
         
         emailService.sendEmail(client.getEmail(), "Lembrete de Vacinação", message);
@@ -117,5 +129,15 @@ public class NotificationService {
         }
         
         return logs;
+    }
+
+    public <Pet> void sendVaccinationDueReminder(Pet pet, Client client, String vaccineName) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'sendVaccinationDueReminder'");
+    }
+
+    public <Client> void sendAppointmentConfirmation(Appointment appointment, Client client) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'sendAppointmentConfirmation'");
     }
 }

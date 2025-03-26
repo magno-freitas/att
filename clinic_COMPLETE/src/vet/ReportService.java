@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import vet.util.DatabaseConnection;
+
 public class ReportService {
     public Map<String, Integer> generateActivityReport(LocalDateTime startDate, LocalDateTime endDate) throws SQLException {
         Map<String, Integer> report = new HashMap<>();

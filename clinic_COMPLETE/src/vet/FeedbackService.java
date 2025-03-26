@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import vet.service.EmailService;
+import vet.util.DatabaseConnection;
+
 public class FeedbackService {
     public void submitFeedback(int appointmentId, int rating, String comment) throws SQLException {
         try (Connection conn = DatabaseConnection.getConnection()) {
@@ -25,9 +28,9 @@ public class FeedbackService {
 
     public void notifyLowRating(int appointmentId, int rating) {
         if (rating <= 2) {
+            EmailService emailService = new EmailService();
             // Send notification to management about low rating
-            EmailService.sendEmail("manager@vetclinic.com", "Low Rating Alert", 
-                "Appointment " + appointmentId + " received a low rating of " + rating);
+            emailService.sendEmail("manager@vetclinic.com", "Low Rating Alert", "Appointment " + appointmentId + " received a low rating of " + rating);
         }
     }
 }

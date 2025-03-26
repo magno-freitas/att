@@ -1,6 +1,8 @@
 package vet.security;
 
 import vet.*;
+import vet.util.DatabaseConnection;
+
 import java.sql.*;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;

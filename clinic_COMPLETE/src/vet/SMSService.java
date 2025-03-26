@@ -1,5 +1,11 @@
 package vet;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import vet.util.DatabaseConnection;
+
 public class SMSService {
     public void sendSMS(String phoneNumber, String message) {
         // In a real implementation, this would integrate with an SMS gateway service

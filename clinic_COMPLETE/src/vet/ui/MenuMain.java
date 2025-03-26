@@ -1,5 +1,6 @@
 package vet.ui;
 
+import vet.MainMenu;
 import vet.service.ServiceFactory;
 
 public class MenuMain {

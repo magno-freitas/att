@@ -2,6 +2,9 @@ package vet.service;
 
 import vet.*;
 import vet.model.*;
+import vet.model.ServiceType;
+import vet.util.DatabaseConnection;
+
 import java.sql.*;
 import java.math.BigDecimal;
 import java.util.HashMap;

@@ -2,12 +2,18 @@ package vet.service;
 
 import vet.*;
 import vet.model.*;
+import vet.payment.PaymentRequest;
+import vet.util.DatabaseConnection;
+
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppointmentService {
+import com.mysql.cj.xdevapi.Client;
+
+public class AppointmentService<AuditLogService> {
     private final AppointmentValidator validator;
     private final NotificationService notificationService;
     private final AuditLogService auditLogService;
@@ -97,49 +103,54 @@ public class AppointmentService {
         }
     }
 
-    public void cancelAppointment(int appointmentId) throws SQLException {
-        // Get appointment details
-        Appointment appointment = getAppointmentById(appointmentId);
-        if (appointment == null) {
-            throw new SQLException("Appointment not found");
-        }
-
-        // Check cancellation policy
-        if (!CancellationPolicy.canCancel(appointment.getStartTime().toLocalDateTime())) {
-            double cancellationFee = CancellationPolicy.calculateCancellationFee(
-                appointment.getPrice(), 
-                appointment.getStartTime().toLocalDateTime()
-            );
-            
-            // Create payment request for cancellation fee
-            if (cancellationFee > 0) {
-                PaymentRequest paymentRequest = new PaymentRequest(
-                    appointmentId,
-                    BigDecimal.valueOf(cancellationFee),
-                    "CANCELLATION_FEE"
-                );
-                paymentGatewayService.processPayment(paymentRequest);
-            }
-        }
-        String query = "UPDATE appointments SET status = 'CANCELLED' WHERE appointment_id = ?";
-        
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            
-            stmt.setInt(1, appointmentId);
-            stmt.executeUpdate();
-            
-            // Get appointment details for notification
+    public void cancelAppointment(int appointmentId, Object paymentGatewayService) throws SQLException {
+            // Get appointment details
             Appointment appointment = getAppointmentById(appointmentId);
-            Client client = new ClientService().getClientById(appointment.getClientId());
+                    if (appointment == null) {
+                        throw new SQLException("Appointment not found");
+                    }
             
-            // Send cancellation notification
-            notificationService.sendCancellationNotification(appointmentId, client.getEmail());
-            
-            // Log the action
-            auditLogService.logAction("Appointment cancelled", "System");
-        }
-    }
+                    // Check cancellation policy
+                    if (!CancellationPolicy.canCancel(appointment.getStartTime().toLocalDateTime())) {
+                        double cancellationFee = CancellationPolicy.calculateCancellationFee(
+                            appointment.getPrice(), 
+                            appointment.getStartTime().toLocalDateTime()
+                        );
+                        
+                        // Create payment request for cancellation fee
+                        if (cancellationFee > 0) {
+                            PaymentRequest paymentRequest = new PaymentRequest(
+                                appointmentId,
+                                BigDecimal.valueOf(cancellationFee),
+                                "CANCELLATION_FEE"
+                            );
+                            paymentGatewayService.processPayment(paymentRequest);
+                    }
+                }
+                String query = "UPDATE appointments SET status = 'CANCELLED' WHERE appointment_id = ?";
+                
+                try (Connection conn = DatabaseConnection.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(query)) {
+                    
+                    stmt.setInt(1, appointmentId);
+                    stmt.executeUpdate();
+                    
+                    // Get appointment details for notification
+                    Appointment appointment = getAppointmentById(appointmentId);
+                    Client client = new ClientService().getClientById(appointment.getClientId());
+                    
+                    // Send cancellation notification
+                    notificationService.sendCancellationNotification(appointmentId, client.getEmail());
+                    
+                    // Log the action
+                    auditLogService.logAction("Appointment cancelled", "System");
+                }
+            }
+        
+            private Appointment getAppointmentById(int appointmentId) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'getAppointmentById'");
+            }
 
     // Other existing methods...
 }

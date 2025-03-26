@@ -1,6 +1,8 @@
 package vet.payment;
 
 import vet.*;
+import vet.util.DatabaseConnection;
+
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.UUID;

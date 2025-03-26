@@ -41,4 +41,20 @@ public class Appointment {
     
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+    public String getService() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getService'");
+    }
+    public void setService(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setService'");
+    }
+    public void setServiceType(ServiceType serviceType2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setServiceType'");
+    }
+    public void setServiceType(ServiceType valueOf) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setServiceType'");
+    }
 }

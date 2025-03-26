@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import vet.model.Appointment;
+import vet.util.DatabaseConnection;
+
 public class ReportingService {
     
     public List<Appointment> getDailyAppointments(Date date) throws SQLException {

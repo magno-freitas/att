@@ -1,11 +1,13 @@
 package vet.service;
 
 import vet.*;
+import vet.util.DatabaseConnection;
+
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public class VaccineStockMonitoringService {
+public class VaccineStockMonitoringService<VaccineStock> {
     private final NotificationService notificationService;
     private final int LOW_STOCK_THRESHOLD = 10;
 
@@ -50,7 +52,8 @@ public class VaccineStockMonitoringService {
         String subject = "Alerta: Estoque Baixo de Vacina";
         String message = String.format("A vacina %s está com estoque baixo (quantidade atual: %d)",
             vaccineName, currentQuantity);
-        EmailService.sendEmail("manager@vetclinic.com", subject, message);
+        EmailService emailService = new EmailService();
+        emailService.sendEmail("manager@vetclinic.com", subject, message);
     }
 
     private VaccineStock getVaccineStock(int vaccineId) throws SQLException {

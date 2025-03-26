@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import vet.util.DatabaseConnection;
+
 public class SupportService {
     public void createTicket(SupportTicket ticket) throws SQLException {
         String sql = "INSERT INTO support_tickets (user_id, subject, description, status, created_at) " +

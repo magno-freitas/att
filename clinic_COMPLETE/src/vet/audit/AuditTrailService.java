@@ -1,6 +1,8 @@
 package vet.audit;
 
 import vet.*;
+import vet.util.DatabaseConnection;
+
 import java.sql.*;
 import java.time.LocalDateTime;
 import javax.servlet.http.HttpServletRequest;

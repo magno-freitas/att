@@ -1,9 +1,14 @@
 package vet;
 
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.twilio.base.Resource;
+
+import vet.util.DatabaseConnection;
 
 public class ResourceService {
     public void addResource(Resource resource) throws SQLException {
@@ -65,5 +70,10 @@ public class ResourceService {
         }
         
         return null;
+    }
+
+    public boolean isResourceAvailable(String resourceType, java.sql.Timestamp startTime, int serviceDuration) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isResourceAvailable'");
     }
 }

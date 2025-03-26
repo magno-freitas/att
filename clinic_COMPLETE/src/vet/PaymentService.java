@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import vet.util.DatabaseConnection;
+
 public class PaymentService {
     public void processPayment(int appointmentId, double amount, String paymentMethod) throws SQLException {
         try (Connection conn = DatabaseConnection.getConnection()) {

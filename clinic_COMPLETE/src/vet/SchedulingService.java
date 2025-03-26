@@ -4,6 +4,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import vet.model.Appointment;
+import vet.util.DatabaseConnection;
+
 public class SchedulingService {
     private static final int MINUTES_PER_SLOT = 30;
     private static final int MAX_SIMULTANEOUS_APPOINTMENTS = 3;

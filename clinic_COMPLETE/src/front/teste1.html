@@ -1,0 +1,219 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Website</title>
+    <style> @import url('https://fonts.googleapis.com2?family=open+Sans:wght@300;400;500&display=swap');
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #FFFFFF;
+            font-family: 'Open Sans', sans-serif;
+        }
+        a{
+            text-decoration: none;
+        }
+        li{
+            list-style-type: none;
+        }
+        header{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 140px;
+            margin-bottom: 5px;
+        }
+        header .logo{
+            width: 155px;
+        }
+        header .logo img{
+            width: 100%;
+        }
+        header .menu ul{
+            display: flex;
+        }
+        header .menu ul li{
+            padding: 0 15px;
+        }
+        header .menu ul li a{
+            color: #272727;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: 0.3s;
+        }
+        header .menu ul li a:hover{
+            color: #ffd80a;
+        }
+        header .header_rigth{
+            display: flex;
+            align-items: center;
+            padding-right: 40px;
+        }
+        header .header_rigth i{
+            font-size: 26px;
+            color: #272727;
+            margin-left: 20px;
+        }
+        header .header_rigth .rel{
+            position: relative;
+        }
+        header .header_rigth .rel.num{
+            position: absolute;
+            bottom: 0;
+            right: 17px;
+            background-color: #000;
+            color: #ffffff;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 10px;
+        }
+        header .header_rigth .rel .total{
+            position: absolute;
+            color: #272727;
+            font-weight: 600;
+            top: -8px;
+            padding-left: 5px;
+        }
+        .banner{
+            width: 100%;
+            height: 75vh;
+            background-image: url('Img/banner.webp');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .banner .banner_txt{
+            width: 33%;
+            height: 30%;position: absolute;
+            top: 0;
+            left: 3%;
+            bottom: -15px;
+            margin: auto;
+        }
+        .banner .banner_txt p{
+            font-size: 15px;
+            font-weight: 600;
+            padding-bottom: 25px;
+            letter-spacing: 2px;
+            color: #272727;
+        }
+        .banner .banner_txt h1{
+            font-size: 58px;
+            line-height: 1.1;
+            color: #272727;
+        }
+        .facility{
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            padding-bottom: 20px;
+            
+        }
+        .w-70{
+            width: 84%;
+            margin: auto;
+        }
+        .facility .f_item{
+            width: 220px;
+            height: 255px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            color: #ffffff;
+        }
+        .facility .f_item svg{
+            position: absolute;
+        }
+        .facility .f_item i{
+            z-index: 99;
+            font-size: 32px;
+        }
+        .facility .f_item h3{
+            z-index: 99;
+            text-transform: uppercase;
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.1;
+            padding-top: 12px;
+        }</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="Img/logo.webp" alt="">
+        </div>
+        <div class="menu">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Produtos em Destaque</a></li>
+                <li><a href="#">Produtos mais Recentes</a></li>
+                <li><a href="#">Contato</a></li>
+            </ul>
+        </div>
+        <div class="header_rigth">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <div class="rel">
+                <i class="fa-regular fa-heart"></i>
+                <span class="num">3</span>
+            </div>
+            <div class="rel">
+                <i class="fa-solid fa-cart-plus"></i>
+                <span class="num">3</span>
+                
+            </div>
+        </div>
+    </header>
+
+
+    <div class="banner">
+        <div class="banner_txt">
+            <p>Bio-Organic 30% OFF</p>
+            <h1>Sempre se Preocupando com a Vida Animal!</h1>
+        </div>
+    </div>
+
+    <div class="facility w-70">
+        <div class="f_item">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 288 288"><path style="fill:#57aa5e"><animate repeatCount="indefinite" attributeName="d" dur="6s" values="M37.5,186c-12.1-10.5-11.8-32.3-7.2-46.7c4.8-15,13.1-17.8,30.1-36.7C91,68.8,83.5,56.7,103.4,45 c22.2-13.1,51.1-9.5,69.6-1.6c18.1,7.8,15.7,15.3,43.3,33.2c28.8,18.8,37.2,14.3,46.7,27.9c15.6,22.3,6.4,53.3,4.4,60.2 c-3.3,11.2-7.1,23.9-18.5,32c-16.3,11.5-29.5,0.7-48.6,11c-16.2,8.7-12.6,19.7-28.2,33.2c-22.7,19.7-63.8,25.7-79.9,9.7 c-15.2-15.1,0.3-41.7-16.6-54.9C63,186,49.7,196.7,37.5,186z; M51,171.3c-6.1-17.7-15.3-17.2-20.7-32c-8-21.9,0.7-54.6,20.7-67.1c19.5-12.3,32.8,5.5,67.7-3.4C145.2,62,145,49.9,173,43.4 c12-2.8,41.4-9.6,60.2,6.6c19,16.4,16.7,47.5,16,57.7c-1.7,22.8-10.3,25.5-9.4,46.4c1,22.5,11.2,25.8,9.1,42.6 c-2.2,17.6-16.3,37.5-33.5,40.8c-22,4.1-29.4-22.4-54.9-22.6c-31-0.2-40.8,39-68.3,35.7c-17.3-2-32.2-19.8-37.3-34.8 C48.9,198.6,57.8,191,51,171.3z; M37.5,186c-12.1-10.5-11.8-32.3-7.2-46.7c4.8-15,13.1-17.8,30.1-36.7C91,68.8,83.5,56.7,103.4,45 c22.2-13.1,51.1-9.5,69.6-1.6c18.1,7.8,15.7,15.3,43.3,33.2c28.8,18.8,37.2,14.3,46.7,27.9c15.6,22.3,6.4,53.3,4.4,60.2 c-3.3,11.2-7.1,23.9-18.5,32c-16.3,11.5-29.5,0.7-48.6,11c-16.2,8.7-12.6,19.7-28.2,33.2c-22.7,19.7-63.8,25.7-79.9,9.7 c-15.2-15.1,0.3-41.7-16.6-54.9C63,186,49.7,196.7,37.5,186z"></animate></path></svg>
+            <i class="fa-solid fa-bag-shopping"></i>
+              <h3>Encomende hoje<br>economize 10%</h3>
+        </div>
+
+        <div class="f_item">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 288 288"><path style="fill:#f89ee1"><animate repeatCount="indefinite" attributeName="d" dur="5s" values="M37.5,186c-12.1-10.5-11.8-32.3-7.2-46.7c4.8-15,13.1-17.8,30.1-36.7C91,68.8,83.5,56.7,103.4,45 c22.2-13.1,51.1-9.5,69.6-1.6c18.1,7.8,15.7,15.3,43.3,33.2c28.8,18.8,37.2,14.3,46.7,27.9c15.6,22.3,6.4,53.3,4.4,60.2 c-3.3,11.2-7.1,23.9-18.5,32c-16.3,11.5-29.5,0.7-48.6,11c-16.2,8.7-12.6,19.7-28.2,33.2c-22.7,19.7-63.8,25.7-79.9,9.7 c-15.2-15.1,0.3-41.7-16.6-54.9C63,186,49.7,196.7,37.5,186z; M51,171.3c-6.1-17.7-15.3-17.2-20.7-32c-8-21.9,0.7-54.6,20.7-67.1c19.5-12.3,32.8,5.5,67.7-3.4C145.2,62,145,49.9,173,43.4 c12-2.8,41.4-9.6,60.2,6.6c19,16.4,16.7,47.5,16,57.7c-1.7,22.8-10.3,25.5-9.4,46.4c1,22.5,11.2,25.8,9.1,42.6 c-2.2,17.6-16.3,37.5-33.5,40.8c-22,4.1-29.4-22.4-54.9-22.6c-31-0.2-40.8,39-68.3,35.7c-17.3-2-32.2-19.8-37.3-34.8 C48.9,198.6,57.8,191,51,171.3z; M37.5,186c-12.1-10.5-11.8-32.3-7.2-46.7c4.8-15,13.1-17.8,30.1-36.7C91,68.8,83.5,56.7,103.4,45 c22.2-13.1,51.1-9.5,69.6-1.6c18.1,7.8,15.7,15.3,43.3,33.2c28.8,18.8,37.2,14.3,46.7,27.9c15.6,22.3,6.4,53.3,4.4,60.2 c-3.3,11.2-7.1,23.9-18.5,32c-16.3,11.5-29.5,0.7-48.6,11c-16.2,8.7-12.6,19.7-28.2,33.2c-22.7,19.7-63.8,25.7-79.9,9.7 c-15.2-15.1,0.3-41.7-16.6-54.9C63,186,49.7,196.7,37.5,186z"></animate></path></svg>
+            <i class="fa-regular fa-circle-left"></i>
+              <h3>dinheiro de volta<br>garantido</h3>
+        </div>
+
+        <div class="f_item">
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 288 288"><path style="fill:#C2835D"><animate repeatCount="indefinite" attributeName="d" dur="7s" values="M37.5,186c-12.1-10.5-11.8-32.3-7.2-46.7c4.8-15,13.1-17.8,30.1-36.7C91,68.8,83.5,56.7,103.4,45 c22.2-13.1,51.1-9.5,69.6-1.6c18.1,7.8,15.7,15.3,43.3,33.2c28.8,18.8,37.2,14.3,46.7,27.9c15.6,22.3,6.4,53.3,4.4,60.2 c-3.3,11.2-7.1,23.9-18.5,32c-16.3,11.5-29.5,0.7-48.6,11c-16.2,8.7-12.6,19.7-28.2,33.2c-22.7,19.7-63.8,25.7-79.9,9.7 c-15.2-15.1,0.3-41.7-16.6-54.9C63,186,49.7,196.7,37.5,186z; M51,171.3c-6.1-17.7-15.3-17.2-20.7-32c-8-21.9,0.7-54.6,20.7-67.1c19.5-12.3,32.8,5.5,67.7-3.4C145.2,62,145,49.9,173,43.4 c12-2.8,41.4-9.6,60.2,6.6c19,16.4,16.7,47.5,16,57.7c-1.7,22.8-10.3,25.5-9.4,46.4c1,22.5,11.2,25.8,9.1,42.6 c-2.2,17.6-16.3,37.5-33.5,40.8c-22,4.1-29.4-22.4-54.9-22.6c-31-0.2-40.8,39-68.3,35.7c-17.3-2-32.2-19.8-37.3-34.8 C48.9,198.6,57.8,191,51,171.3z; M37.5,186c-12.1-10.5-11.8-32.3-7.2-46.7c4.8-15,13.1-17.8,30.1-36.7C91,68.8,83.5,56.7,103.4,45 c22.2-13.1,51.1-9.5,69.6-1.6c18.1,7.8,15.7,15.3,43.3,33.2c28.8,18.8,37.2,14.3,46.7,27.9c15.6,22.3,6.4,53.3,4.4,60.2 c-3.3,11.2-7.1,23.9-18.5,32c-16.3,11.5-29.5,0.7-48.6,11c-16.2,8.7-12.6,19.7-28.2,33.2c-22.7,19.7-63.8,25.7-79.9,9.7 c-15.2-15.1,0.3-41.7-16.6-54.9C63,186,49.7,196.7,37.5,186z"></animate></path></svg>
+           <i class="fa-solid fa-headset"></i>
+              <h3>24/7<br>suporte</h3>
+        </div>
+    </div>
+
+    <section class="w-70">
+        <div class="shop_category">
+            <div class="headding"></div>
+        </div>
+    </section>
+
+   
+</body>
+</html>

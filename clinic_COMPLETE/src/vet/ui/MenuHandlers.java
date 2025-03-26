@@ -1,9 +1,14 @@
 package vet.ui;
 
-import vet.*;
+import vet.model.ServiceType;
 import vet.service.*;
 import vet.util.ValidationUtils;
+import vet.MedicalRecord;
+import vet.ReportingService;
 import vet.exception.ValidationException;
+import vet.model.Appointment;
+
+
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -13,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+
+
 public class MenuHandlers {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm");
@@ -20,7 +27,7 @@ public class MenuHandlers {
     private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     // Client Management
-    public static void handleAddClient() {
+    public static <Client> void handleAddClient() {
         try {
             System.out.println("\n=== Cadastro de Cliente ===");
             
@@ -56,7 +63,7 @@ public class MenuHandlers {
     }
 
     // Pet Management
-    public static void handleAddPet() {
+    public static <Client> void handleAddPet() {
         try {
             System.out.println("\n=== Cadastro de Pet ===");
             
@@ -103,7 +110,7 @@ public class MenuHandlers {
     }
 
     // Appointment Management
-    public static void handleScheduleAppointment() {
+    public static <Pet, Client> void handleScheduleAppointment() {
         try {
             System.out.println("\n=== Agendamento de Serviço ===");
             
@@ -198,7 +205,7 @@ public class MenuHandlers {
     }
 
     // Medical Records Management
-    public static void handleAddMedicalRecord() {
+    public static <Pet> void handleAddMedicalRecord() {
         try {
             System.out.println("\n=== Novo Registro Médico ===");
             
@@ -307,7 +314,7 @@ public class MenuHandlers {
         return scanner.nextLine();
     }
 
-    private static int readInt(String prompt) throws NumberFormatException {
+    static int readInt(String prompt) throws NumberFormatException {
         return Integer.parseInt(readString(prompt));
     }
 

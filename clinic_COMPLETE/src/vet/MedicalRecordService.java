@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import vet.util.DatabaseConnection;
+
 public class MedicalRecordService {
     
     public void addMedicalRecord(MedicalRecord record) throws SQLException {
