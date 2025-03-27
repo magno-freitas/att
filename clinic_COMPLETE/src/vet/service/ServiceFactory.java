@@ -33,6 +33,9 @@ public class ServiceFactory<ClientService, PetService> {
     private final ReportingService reportingService;
     private final NotificationScheduler notificationScheduler;
 
+    /**
+     * 
+     */
     private ServiceFactory() {
         try {
             // Initialize basic services first
@@ -99,5 +102,15 @@ public class ServiceFactory<ClientService, PetService> {
         } catch (Exception e) {
             System.err.println("Error during service shutdown: " + e.getMessage());
         }
+    }
+
+    public void initialize() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'initialize'");
+    }
+
+    public void shutdown() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'shutdown'");
     }
 }

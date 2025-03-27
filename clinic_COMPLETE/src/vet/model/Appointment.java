@@ -49,10 +49,6 @@ public class Appointment {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setService'");
     }
-    public void setServiceType(ServiceType serviceType2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setServiceType'");
-    }
     public void setServiceType(ServiceType valueOf) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setServiceType'");

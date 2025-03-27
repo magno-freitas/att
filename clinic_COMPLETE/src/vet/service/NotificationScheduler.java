@@ -1,10 +1,18 @@
 package vet.service;
 
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class NotificationScheduler {
+import com.mysql.cj.xdevapi.Client;
+
+import vet.DatabaseConnection;
+import vet.NotificationService;
+import vet.model.ServiceType;
+import vet.model.Appointment;
+
+public class NotificationScheduler<ClientService, PetService, Pet> {
     private final ScheduledExecutorService scheduler;
     private final NotificationService notificationService;
     private final ClientService clientService;
@@ -15,6 +23,14 @@ public class NotificationScheduler {
         this.notificationService = new NotificationService();
         this.clientService = new ClientService();
         this.petService = new PetService();
+    }
+
+    public NotificationScheduler(NotificationService notificationService2) {
+        this.scheduler = null;
+        this.notificationService = new NotificationService();
+        this.clientService = null;
+        //TODO Auto-generated constructor stub
+        this.petService = null;
     }
 
     public void start() {

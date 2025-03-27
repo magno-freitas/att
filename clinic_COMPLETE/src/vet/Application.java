@@ -1,34 +1,44 @@
 package vet;
 
-import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
-import vet.config.DatabaseConfig;
+import vet.config.ConfigurationManager;
 import vet.dao.ConnectionPool;
 import vet.service.ServiceFactory;
 
 public class Application {
-    public static void main(String[] args) {
-        try {
-            // Load database configuration
-            ConfigurationManager.initialize();
-            
-            // Initialize services and database
-            ServiceFactory serviceFactory = ServiceFactory.getInstance();
-            ServiceInitializer.initializeServices(serviceFactory);
+    private static final Logger logger = Logger.getLogger(Application.class.getName());
 
-            LogManager.logInfo("Application started successfully");
+    public static void main(String[] args, ServiceFactory ConfigurationManager) {
+            try {
+                // Initialize configuration
+                ConfigurationManager.getInstance().initialize();
+            
+            // Initialize database connection pool
+            ConnectionPool.initialize();
+            
+            // Initialize services
+            ServiceFactory.getInstance().initialize();
+
+            logger.info("Application started successfully");
             
             // Show main menu
-            MainMenu.showMainMenu();
+            MainMenu.show();
         } catch (Exception e) {
-            System.err.println("Application failed to start: " + e.getMessage());
+            logger.severe("Application failed to start: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            // Ensure proper shutdown
-            // Shutdown all services
-            ServiceInitializer.shutdownServices(ServiceFactory.getInstance());
-            // Close database connections
-            ConnectionPool.shutdown();
+            shutdown();
+        }
+    }
+
+    private static void shutdown() {
+        try {
+            ServiceFactory.getInstance().shutdown();
+            ConnectionPool.closePool();
+            logger.info("Application shutdown completed");
+        } catch (Exception e) {
+            logger.severe("Error during shutdown: " + e.getMessage());
         }
     }
 }

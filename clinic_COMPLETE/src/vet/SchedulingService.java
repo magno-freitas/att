@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vet.model.Appointment;
+import vet.model.ServiceType;
 import vet.util.DatabaseConnection;
 
 public class SchedulingService {

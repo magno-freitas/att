@@ -1,17 +1,12 @@
 package vet.service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
 
-import vet.DatabaseConnection;
-
 public class EmailService {
-    private static final String FROM_EMAIL = "clinica@veterinaria.com";
-    private static final String EMAIL_PASSWORD = "your_password_here"; // In production, use secure configuration
+    private static final String FROM_EMAIL = SecureConfig.getDecryptedProperty("email.from");
+    private static final String EMAIL_PASSWORD = SecureConfig.getDecryptedProperty("email.password");
     private Properties props;
     private Session session;
 
@@ -19,8 +14,8 @@ public class EmailService {
         props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.host", SecureConfig.getDecryptedProperty("smtp.host"));
+        props.put("mail.smtp.port", SecureConfig.getDecryptedProperty("smtp.port"));
 
         session = Session.getInstance(props, new Authenticator() {
             @Override
@@ -57,7 +52,7 @@ public class EmailService {
     private void logEmailSent(String toEmail, String subject, String message) {
         try {
             String query = "INSERT INTO email_log (to_email, subject, message, sent_at) VALUES (?, ?, ?, NOW())";
-            try (Connection conn = DatabaseConnection.getConnection();
+            try (Connection conn = ConnectionPool.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(query)) {
                 
                 stmt.setString(1, toEmail);

@@ -1,44 +1,55 @@
 package vet.service;
 
 import vet.dao.ConnectionPool;
-import vet.exception.ApplicationException;
-import vet.util.LogManager;
+import vet.exception.ServiceException;
 import java.sql.Connection;
 
 public class ServiceInitializer {
-    public static void initializeServices(ServiceFactory serviceFactory) {
+    private static final ServiceInitializer instance = new ServiceInitializer();
+    private final ServiceFactory serviceFactory;
+    private boolean initialized = false;
+
+    private ServiceInitializer() {
+        this.serviceFactory = ServiceFactory.getInstance();
+    }
+
+    public static ServiceInitializer getInstance() {
+        return instance;
+    }
+
+    public synchronized void initialize() {
+        if (initialized) {
+            return;
+        }
+
         try {
-            // Test database connection first
-            testDatabaseConnection();
-            
-            // Initialize and start background services
-            serviceFactory.getNotificationScheduler().start();
-            
-            LogManager.logInfo("Services initialized successfully");
+            // Test database connectivity
+            try (Connection conn = ConnectionPool.getConnection()) {
+                // Connection test successful
+            }
+
+            // Start all services
+            serviceFactory.startServices();
+            initialized = true;
         } catch (Exception e) {
-            throw new ApplicationException("Failed to initialize services", e);
+            throw new ServiceException("Failed to initialize services", e);
         }
     }
-    
-    private static void testDatabaseConnection() {
-        try (Connection conn = ConnectionPool.getConnection()) {
-            LogManager.logInfo("Database connection test successful");
+
+    public synchronized void shutdown() {
+        if (!initialized) {
+            return;
+        }
+
+        try {
+            serviceFactory.shutdownServices();
+            initialized = false;
         } catch (Exception e) {
-            throw new ApplicationException("Database connection test failed", e);
+            throw new ServiceException("Failed to shutdown services", e);
         }
     }
-    
-    public static void shutdownServices(ServiceFactory serviceFactory) {
-        try {
-            // Shutdown services in reverse order
-            serviceFactory.getNotificationScheduler().shutdown();
-            
-            // Close database connections
-            ConnectionPool.shutdown();
-            
-            LogManager.logInfo("Services shutdown completed successfully");
-        } catch (Exception e) {
-            LogManager.logError("Error during service shutdown", e);
-        }
+
+    public boolean isInitialized() {
+        return initialized;
     }
 }

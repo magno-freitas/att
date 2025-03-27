@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.xdevapi.Client;
+import vet.service.ClientService;
+import vet.model.Client;
 
 public class AppointmentService<AuditLogService> {
     private final AppointmentValidator validator;
@@ -26,7 +27,7 @@ public class AppointmentService<AuditLogService> {
         this.auditLogService = new AuditLogService();
     }
 
-    public void scheduleAppointment(Appointment appointment) throws SQLException {
+    public <Client> void scheduleAppointment(Appointment appointment) throws SQLException {
         // Validate appointment
         validator.validateAppointment(appointment);
         
@@ -103,6 +104,36 @@ public class AppointmentService<AuditLogService> {
         }
     }
 
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        // TODO Auto-generated method stub
+        return super.clone();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        // TODO Auto-generated method stub
+        return super.equals(obj);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        // TODO Auto-generated method stub
+        super.finalize();
+    }
+
+    @Override
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString();
+    }
+
     public void cancelAppointment(int appointmentId, Object paymentGatewayService) throws SQLException {
             // Get appointment details
             Appointment appointment = getAppointmentById(appointmentId);
@@ -147,10 +178,156 @@ public class AppointmentService<AuditLogService> {
                 }
             }
         
-            private Appointment getAppointmentById(int appointmentId) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'getAppointmentById'");
+            private Appointment getAppointmentById(int appointmentId) throws SQLException {
+                String query = "SELECT * FROM appointments WHERE appointment_id = ?";
+                
+                try (Connection conn = DatabaseConnection.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(query)) {
+                    
+                    stmt.setInt(1, appointmentId);
+                    ResultSet rs = stmt.executeQuery();
+                    
+                    if (rs.next()) {
+                        Appointment appointment = new Appointment();
+                        appointment.setAppointmentId(rs.getInt("appointment_id"));
+                        appointment.setClientId(rs.getInt("client_id"));
+                        appointment.setPetId(rs.getInt("pet_id"));
+                        appointment.setServiceType(ServiceType.valueOf(rs.getString("service_type")));
+                        appointment.setStartTime(rs.getTimestamp("start_time"));
+                        appointment.setEndTime(rs.getTimestamp("end_time"));
+                        appointment.setStatus(rs.getString("status"));
+                        appointment.setPrice(rs.getDouble("price"));
+                        appointment.setNotes(rs.getString("notes"));
+                        return appointment;
+                    }
+                    return null;
+                }
             }
-
-    // Other existing methods...
-}
+        
+            public List<Appointment> getAppointmentsByClient(int clientId) throws SQLException {
+                String query = "SELECT * FROM appointments WHERE client_id = ? ORDER BY start_time";
+                List<Appointment> appointments = new ArrayList<>();
+                
+                try (Connection conn = DatabaseConnection.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(query)) {
+                    
+                    stmt.setInt(1, clientId);
+                    ResultSet rs = stmt.executeQuery();
+                    
+                    while (rs.next()) {
+                        Appointment appointment = new Appointment();
+                        appointment.setAppointmentId(rs.getInt("appointment_id"));
+                        appointment.setClientId(rs.getInt("client_id"));
+                        appointment.setPetId(rs.getInt("pet_id"));
+                        appointment.setServiceType(ServiceType.valueOf(rs.getString("service_type")));
+                        appointment.setStartTime(rs.getTimestamp("start_time"));
+                        appointment.setEndTime(rs.getTimestamp("end_time"));
+                        appointment.setStatus(rs.getString("status"));
+                        appointment.setPrice(rs.getDouble("price"));
+                        appointment.setNotes(rs.getString("notes"));
+                        appointments.add(appointment);
+                    }
+                }
+                return appointments;
+            }
+        
+            public List<Appointment> getAppointmentsByDate(LocalDateTime date) throws SQLException {
+                String query = "SELECT * FROM appointments WHERE DATE(start_time) = DATE(?) ORDER BY start_time";
+                List<Appointment> appointments = new ArrayList<>();
+                
+                try (Connection conn = DatabaseConnection.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(query)) {
+                    
+                    stmt.setTimestamp(1, Timestamp.valueOf(date));
+                    ResultSet rs = stmt.executeQuery();
+                    
+                    while (rs.next()) {
+                        Appointment appointment = new Appointment();
+                        appointment.setAppointmentId(rs.getInt("appointment_id"));
+                        appointment.setClientId(rs.getInt("client_id"));
+                        appointment.setPetId(rs.getInt("pet_id"));
+                        appointment.setServiceType(ServiceType.valueOf(rs.getString("service_type")));
+                        appointment.setStartTime(rs.getTimestamp("start_time"));
+                        appointment.setEndTime(rs.getTimestamp("end_time"));
+                        appointment.setStatus(rs.getString("status"));
+                        appointment.setPrice(rs.getDouble("price"));
+                        appointment.setNotes(rs.getString("notes"));
+                        appointments.add(appointment);
+                    }
+                }
+                return appointments;
+            }
+        
+            public void completeAppointment(int appointmentId, String notes) throws SQLException {
+                String query = "UPDATE appointments SET status = 'COMPLETED', notes = ? WHERE appointment_id = ?";
+                
+                try (Connection conn = DatabaseConnection.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(query)) {
+                    
+                    stmt.setString(1, notes);
+                    stmt.setInt(2, appointmentId);
+                    stmt.executeUpdate();
+                    
+                    // Get appointment details for notification
+                    Appointment appointment = getAppointmentById(appointmentId);
+                    Client client = new ClientService().getClientById(appointment.getClientId());
+                    
+                    // Send completion notification
+                    notificationService.sendCompletionNotification(appointmentId, client.getEmail());
+                    
+                    // Log the action
+                    auditLogService.logAction("Appointment completed", "System");
+                }
+            }
+        
+            public List<Appointment> getUpcomingAppointments(int clientId) throws SQLException {
+                String query = "SELECT * FROM appointments WHERE client_id = ? AND start_time > NOW() ORDER BY start_time";
+                List<Appointment> appointments = new ArrayList<>();
+                
+                try (Connection conn = DatabaseConnection.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(query)) {
+                    
+                    stmt.setInt(1, clientId);
+                    ResultSet rs = stmt.executeQuery();
+                    
+                    while (rs.next()) {
+                        Appointment appointment = new Appointment();
+                        appointment.setAppointmentId(rs.getInt("appointment_id"));
+                        appointment.setClientId(rs.getInt("client_id"));
+                        appointment.setPetId(rs.getInt("pet_id"));
+                        appointment.setServiceType(ServiceType.valueOf(rs.getString("service_type")));
+                        appointment.setStartTime(rs.getTimestamp("start_time"));
+                        appointment.setEndTime(rs.getTimestamp("end_time"));
+                        appointment.setStatus(rs.getString("status"));
+                        appointment.setPrice(rs.getDouble("price"));
+                        appointment.setNotes(rs.getString("notes"));
+                        appointments.add(appointment);
+                    }
+                }
+                return appointments;
+            }
+        
+            public boolean isTimeSlotAvailable(LocalDateTime startTime, ServiceType serviceType) throws SQLException {
+                // Calculate end time based on service duration
+                LocalDateTime endTime = startTime.plusMinutes(serviceType.getDuration());
+                
+                String query = "SELECT COUNT(*) FROM appointments WHERE " +
+                              "((start_time BETWEEN ? AND ?) OR (end_time BETWEEN ? AND ?)) " +
+                              "AND status != 'CANCELLED'";
+                
+                try (Connection conn = DatabaseConnection.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(query)) {
+                    
+                    stmt.setTimestamp(1, Timestamp.valueOf(startTime));
+                    stmt.setTimestamp(2, Timestamp.valueOf(endTime));
+                    stmt.setTimestamp(3, Timestamp.valueOf(startTime));
+                    stmt.setTimestamp(4, Timestamp.valueOf(endTime));
+                    
+                    ResultSet rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        return rs.getInt(1) == 0;
+                    }
+                }
+                return false;
+            }
+        }

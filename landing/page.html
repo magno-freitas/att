@@ -1,89 +1,161 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Iphone 21 - Oferta Exclusiva</title>
     <style>
-        body{
-            background-color: #dbdbdb;
+        body {
+            background-color: #f5f5f5;
             font-family: Arial, sans-serif;
             color: #333333;
             line-height: 1.6;
-        } header{
-            background-color: #6f9fcf;
+            margin: 0;
+        }
+
+        header {
+            background-color: #2c3e50;
             color: #ffffff;
             text-align: center;
             padding: 2rem;
-        } .hero{
-            background-color: #f2f2f2;
+        }
+
+        .hero {
+            background-color: #3498db;
             color: #ffffff;
             text-align: center;
             padding: 4rem 2rem;
-        } .features{
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('smartphone.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .features {
             max-width: 1200px;
             margin: 0 auto;
             padding: 3rem 1rem;
             text-align: center;
-        } .feature-grid{
+        }
+
+        .feature-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
-        } .cta-section{
-            background-color: #f2f2f2;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .cta-section {
+            background-color: #f8f9fa;
             padding: 4rem 2rem;
             text-align: center;
         }
-        .cta-button{
+
+        .cta-button {
             display: inline-block;
             padding: 1rem 2rem;
-            background-color: #6f9fcf;
+            background-color: #e74c3c;
             color: #ffffff;
             text-decoration: none;
             border-radius: 4px;
             font-weight: bold;
             margin-top: 1rem;
-            transition: background-color 0.3s;
-        } .cta-button:hover{
-            background-color: #555;
-        } .price{
-            font-size: 2.5rem;
-            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .price {
+            font-size: 3.5rem;
+            color: #ffffff;
             margin: 1rem 0;
-        } @media (max-widrg:768px){
-            .feature-grid{
+            font-weight: bold;
+        }
+
+        .form-section {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .countdown {
+            background-color: #e74c3c;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .feature-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .hero {
+                padding: 2rem 1rem;
+            }
+            
+            .price {
+                font-size: 2.5rem;
+            }
         }
-        h1{
-            color: #6f9fcf;
+        h3{
+            color: #141111;
         }
-        p{
-            color: #e74c3c;
-        }
-        
     </style>
 </head>
 <body>
     <header>
-    <h1>Novo Smartphone</h1>
-    <p>A tecnologia do futuro em suas mãos</p>
-</header>
+        <h1>Novo IPHONE 21!!!</h1>
+        <p>A tecnologia do futuro em suas mãos</p>
+    </header>
 
-<section class="hero">
-    <h2>Oferta Exclusiva</h2>
-    <p>Aproveite30% de Desconto</p>
-    <div>class="price">$999</div>
-    <p><strong>Apenas por tempo limitado!</strong></p>
-    <a href="#comprar" class="cta-button">QUERO APROVEITAR</a>
+    <section class="hero">
+        <img src="https://i.ibb.co/k2bBwQjY/lwanm9w5lvl31-removebg-preview.png" alt="Iphone 21" style="width: 400px; height: 400px; border-radius: 10px;">
+        <h2>Oferta Exclusiva</h2>
+        <p>Aproveite 30% de Desconto - 99,9% Confiável</p>
+        <div class="price">R$ 999,00</div>
+        <div class="countdown">
+            <strong>Oferta termina em: </strong>
+            <span id="timer">23:59:59</span>
+        </div>
+        <a href="#form" class="cta-button">QUERO APROVEITAR AGORA</a>
     </section>
 
     <section class="features">
         <h2>Principais Características</h2>
         <div class="feature-grid">
             <div class="feature">
-                <h3>Cameras Profissionais</h3>
-                <p>Alta qualidade de imagem e video</p>
+                <h3>Câmeras Profissionais</h3>
+                <p>Alta qualidade de imagem e vídeo com 108MP</p>
             </div>
             <div class="feature">
                 <h3>Bateria Duradoura</h3>
@@ -96,15 +168,10 @@
         </div>
     </section>
 
-    <section class="cta-section">
-        <h2>Não perca esta oferta!</h2>
-        <p>Promoção válida apenas hoje</p>
-        <a href="#comprar" class="cta-button">GARANTIR MEU SMARTPHONE</a>
-    </section>
     <section class="form-section" id="form">
         <h2>Garanta já o seu!</h2>
         <p>Preencha seus dados para garantir esta oferta exclusiva</p>
-        <form action="#" method="POST">
+        <form action="#" method="POST" id="orderForm">
             <div class="form-group">
                 <label for="nome">Nome completo:</label>
                 <input type="text" id="nome" name="nome" required>
@@ -121,21 +188,34 @@
         </form>
     </section>
 
-    <section class="cta-section">
-        <h2>Não perca esta oferta!</h2>
-        <p>⚠️ Promoção válida apenas hoje</p>
-        <p>🔥 Últimas unidades disponíveis</p>
-        <a href="#form" class="cta-button">GARANTIR MEU SMARTPHONE</a>
-    </section>
+    <script>
+        // Countdown Timer
+        function startTimer() {
+            const timer = document.getElementById('timer');
+            let time = 24 * 60 * 60; // 24 hours in seconds
+
+            setInterval(() => {
+                const hours = Math.floor(time / 3600);
+                const minutes = Math.floor((time % 3600) / 60);
+                const seconds = time % 60;
+                
+                timer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                
+                if (time > 0) {
+                    time--;
+                }
+            }, 1000);
+        }
+
+        // Form submission
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Obrigado! Em breve entraremos em contato.');
+            this.reset();
+        });
+
+        // Start timer when page loads
+        document.addEventListener('DOMContentLoaded', startTimer);
+    </script>
 </body>
 </html>
-<!-- É uma página criada especificamente para uma
-campanha de marketing ou publicidade, onde os
-visitantes "aterrissam" após clicarem em um link em
-um post de rede social
-• Altamente focado em um produto, serviço ou oferta
-específica, com opções de navegação mínimas
-• Geralmente inclui uma chamada clara para a ação (call to action), como
-preencher um formulário, fazer uma compra, baixar um recurso
-Agora:
-• Faça uma Landing Page -->

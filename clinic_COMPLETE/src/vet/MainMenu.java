@@ -87,4 +87,9 @@ public class MainMenu {
         System.out.println("5. Voltar");
         System.out.print("Escolha uma opção: ");
     }
+
+    public static void show() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'show'");
+    }
 }

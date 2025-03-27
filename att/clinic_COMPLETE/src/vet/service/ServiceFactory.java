@@ -1,125 +1,92 @@
 package vet.service;
 
+import vet.SMSService;
+import vet.dao.ConnectionPool;
+import vet.exception.ApplicationException;
+import vet.exception.ServiceException;
+import java.sql.Connection;
+
 /**
- * Factory for creating service instances to ensure proper initialization
- * and dependency injection.
+ * Factory for creating service instances with proper initialization order
  */
 public class ServiceFactory {
-    private static final Object LOCK = new Object();
-    private static volatile ServiceFactory instance;
-    public static final String VERSION = "1.0.0";
+    private static ServiceFactory instance;
     
+    // Basic services
+    private final EmailService emailService;
+    private final SMSService smsService;
+    private final AuditService auditService;
+    
+    // Core business services
     private final ClientService clientService;
     private final PetService petService;
     private final AppointmentService appointmentService;
     private final MedicalRecordService medicalRecordService;
+    private final PriceService priceService;
+    
+    // Supporting services
     private final NotificationService notificationService;
     private final ReportingService reportingService;
-    private final PriceService priceService;
-    private final ResourceService resourceService;
-    private final PaymentGatewayService paymentGatewayService;
     private final NotificationScheduler notificationScheduler;
-    private final EmailService emailService;
-    private final SMSService smsService;
-    private final AuditService auditService;
-
+    
     private ServiceFactory() {
-        try {
-            // Initialize basic services first
-            emailService = new EmailService();
-            smsService = new SMSService();
-            auditService = new AuditService();
-            
-            // Initialize notification system
-            notificationService = new NotificationService(emailService, smsService);
-            
-            // Initialize core business services
-            priceService = new PriceService();
-            resourceService = new ResourceService();
-            paymentGatewayService = new PaymentGatewayService(this);
-            clientService = new ClientService();
-            petService = new PetService();
-            
-            // Initialize medical and appointment services
-            appointmentService = new AppointmentService(this);
-            medicalRecordService = new MedicalRecordService();
-            
-            // Initialize supporting services
-            reportingService = new ReportingService();
-            notificationScheduler = new NotificationScheduler(notificationService);
-        } catch (Exception e) {
-            throw new ApplicationException("Failed to initialize services", e);
-        }
-    }
-
-    public static ServiceFactory getInstance() {
-        ServiceFactory result = instance;
-        if (result == null) {
-            synchronized (LOCK) {
-                result = instance;
-                if (result == null) {
-                    instance = result = new ServiceFactory();
-                }
-            }
-        }
-        return result;
-    }
-
-    public ClientService getClientService() {
-        return clientService;
-    }
-
-    public PetService getPetService() {
-        return petService;
-    }
-
-    public AppointmentService getAppointmentService() {
-        return appointmentService;
-    }
-
-    public MedicalRecordService getMedicalRecordService() {
-        return medicalRecordService;
-    }
-
-    public NotificationService getNotificationService() {
-        return notificationService;
-    }
-
-    public ReportingService getReportingService() {
-        return reportingService;
-    }
-
-    public PriceService getPriceService() {
-        return priceService;
-    }
-
-    public ResourceService getResourceService() {
-        return resourceService;
+        // Initialize services in dependency order
+        emailService = new EmailService();
+        smsService = new SMSService();
+        auditService = new AuditService();
+        
+        notificationService = new NotificationService(emailService, smsService);
+        notificationScheduler = new NotificationScheduler(notificationService);
+        
+        // Initialize business services
+        clientService = new ClientService();
+        petService = new PetService();
+        priceService = new PriceService();
+        reportingService = new ReportingService();
+        
+        // Initialize services that depend on others
+        appointmentService = new AppointmentService(this);
+        medicalRecordService = new MedicalRecordService(this);
+        
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownServices));
     }
     
-    public PaymentGatewayService getPaymentGatewayService() {
-        return paymentGatewayService;
+    public static synchronized ServiceFactory getInstance() {
+        if (instance == null) {
+            instance = new ServiceFactory();
+        }
+        return instance;
     }
-
-    public NotificationScheduler getNotificationScheduler() {
-        return notificationScheduler;
-    }
-
-    public EmailService getEmailService() {
-        return emailService;
-    }
-
-    public SMSService getSMSService() {
-        return smsService;
-    }
-
-    public AuditService getAuditService() {
-        return auditService;
-    }
+    
+    // Service getters
+    public EmailService getEmailService() { return emailService; }
+    public SMSService getSMSService() { return smsService; }
+    public AuditService getAuditService() { return auditService; }
+    public ClientService getClientService() { return clientService; }
+    public PetService getPetService() { return petService; }
+    public AppointmentService getAppointmentService() { return appointmentService; }
+    public MedicalRecordService getMedicalRecordService() { return medicalRecordService; }
+    public NotificationService getNotificationService() { return notificationService; }
+    public ReportingService getReportingService() { return reportingService; }
+    public PriceService getPriceService() { return priceService; }
+    public NotificationScheduler getNotificationScheduler() { return notificationScheduler; }
+    public ResourceService getResourceService() { return new ResourceService(); }
 
     public void startServices() {
-        // Start background services
-        notificationScheduler.start();
+        try {
+            // Test database connectivity
+            try (Connection conn = ConnectionPool.getConnection()) {
+                // Connection test successful
+            }
+            
+            // Start background services
+            notificationScheduler.start();
+            
+            // Log successful startup
+            auditService.logAction("Services started successfully", "System");
+        } catch (Exception e) {
+            throw new ServiceException("Failed to start services", e);
+        }
     }
 
     public void shutdownServices() {
@@ -127,12 +94,24 @@ public class ServiceFactory {
             // Shutdown services in reverse order
             notificationScheduler.shutdown();
             
-            // Close database connections
+            // Shutdown all active services
+            if (appointmentService != null) {
+                auditService.logAction("Shutting down appointment service", "System");
+            }
+            if (medicalRecordService != null) {
+                auditService.logAction("Shutting down medical record service", "System");
+            }
+            
+            // Shutdown core services
+            if (notificationService != null) {
+                auditService.logAction("Shutting down notification service", "System");
+            }
+            
+            // Shutdown infrastructure last
             ConnectionPool.shutdown();
-            LogManager.logInfo("Services shutdown completed");
+            auditService.logAction("Services shut down successfully", "System");
         } catch (Exception e) {
-            LogManager.logError("Error during service shutdown", e);
-            throw new ApplicationException("Failed to shutdown services properly", e);
+            throw new ServiceException("Failed to shutdown services", e);
         }
     }
 }

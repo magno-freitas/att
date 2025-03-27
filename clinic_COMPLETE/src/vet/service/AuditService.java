@@ -4,7 +4,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuditService {
+import vet.DatabaseConnection;
+import vet.model.AuditLog;
+
+public class AuditService<AuditLog> {
     public void logAction(String tableName, int recordId, String action, String oldValue, String newValue) {
         String query = "INSERT INTO audit_trail (table_name, record_id, action, old_value, new_value, user_id) " +
                       "VALUES (?, ?, ?, ?, ?, ?)";
@@ -24,8 +27,7 @@ public class AuditService {
             e.printStackTrace();
         }
     }
-
-    public List<AuditLog> getAuditTrail(String tableName, int recordId) throws SQLException {
+    public <AuditLog> List<AuditLog> getAuditTrail(String tableName, int recordId) throws SQLException {
         String query = "SELECT * FROM audit_trail WHERE table_name = ? AND record_id = ? ORDER BY created_at DESC";
         List<AuditLog> logs = new ArrayList<>();
         

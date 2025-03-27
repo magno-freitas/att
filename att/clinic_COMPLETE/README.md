@@ -1,50 +1,49 @@
 # Veterinary Clinic Management System
 
-The Veterinary Clinic Management System is a comprehensive solution for managing veterinary clinics. It provides functionality for:
+## Overview
+This system provides a complete solution for managing a veterinary clinic including appointment scheduling, patient records, and client management.
 
-- Appointment scheduling and management
-- Client and pet record management  
-- Medical records tracking
-- Notification system for appointments
-- Reporting and analytics
-- Resource management
-- Billing and payments
+## Features
+- Secure credential management
+- Connection pooling for database operations
+- Service dependency management
+- Proper exception handling
+- Audit logging
+- Email notifications
+- SMS notifications
+- Appointment scheduling
+- Medical records management
 
 ## Configuration
+The system uses two configuration files:
+- database.properties: Contains non-sensitive database configuration
+- secure.properties: Contains encrypted sensitive configuration (credentials, etc.)
 
-The system uses two main configuration files:
+## Security
+- All sensitive data is encrypted in configuration files
+- Database credentials are managed securely
+- Email credentials are protected
+- SMTP settings are secured
 
-1. `application.properties` - Main application settings
-2. `database.properties` - Database connection settings
+## Service Architecture
+- Services are managed through ServiceFactory
+- Proper initialization and shutdown sequence
+- Resource cleanup on shutdown
+- Connection pool management
+- Audit logging of all operations
 
 ## Getting Started
+1. Configure secure.properties with encrypted credentials
+2. Configure database.properties with connection settings
+3. Start the application
+4. Services will initialize automatically in the correct order
 
-1. Ensure MySQL is installed and running
-2. Create a database named `vet_clinic` 
-3. Update database.properties with your credentials
-4. Run Application.java to start the system
+## Shutdown Process
+The system implements a proper shutdown sequence:
+1. Background services (notifications, schedulers)
+2. Business services (appointments, medical records)
+3. Core services (email, SMS)
+4. Infrastructure (connection pool)
 
-## Key Features
-
-- Double-booking prevention
-- Working hours enforcement 
-- SMS/Email notifications
-- Audit logging
-- Transaction management
-- Connection pooling
-- Dependency injection
-
-## Architecture 
-
-The system follows a layered architecture:
-
-- UI Layer (Main Menu, Forms)
-- Service Layer (Business Logic)  
-- Data Access Layer (Database)
-- Common Utilities Layer
-
-Key patterns used:
-- Singleton pattern for ServiceFactory
-- Factory pattern for Services
-- Builder pattern for complex objects
-- Strategy pattern for validations
+## Error Handling
+All errors are properly handled and logged with appropriate context and stack traces.
