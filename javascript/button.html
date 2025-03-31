@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+        } #quatro{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <a id="text">um</a><button id="button1">um</button><br>
+    <a id="count">dois</a><button id="button2">dois</button><br>
+    <a id="tres">tres</a><button id="button3">três</button><br>
+    <a id="quatro">quatro</a><button id="button4">quatro</button><br>
+ 
+    <script>
+        let count=0
+        let currentIndex=0
+        const array=["um","dois","tres","quatro"]
+
+        document.getElementById('button1').addEventListener('click',function(){
+            document.getElementById('text').textContent="Hello, world!"
+        });
+        document.getElementById('button2').addEventListener('click',function(){
+            count++
+            document.getElementById('count').textContent=count;
+        });
+        document.getElementById('button3').addEventListener('click',function(){
+            document.getElementById('tres').innerHTML=array[currentIndex];
+           
+            currentIndex=(currentIndex+1)%array.length;
+        });
+        
+        document.getElementById('button4').addEventListener('click',function(){
+        
+        if(document.getElementById('quatro').style.display=="block"){
+            document.getElementById('quatro').style.display="none"
+        } else {
+            document.getElementById('quatro').style.display="block"
+        }
+        });
+        
+    </script>    
+</body>
+</html>
+<!-- Ao clicar no botão, o texto “um” deve ser
+alterado para “Hello, world!”
+• Ao clicar no botão do texto “dois” deve mostrar
+um contador, e somar 1 sempre ao clicar
+• Ao clicar no 3º botão deve mostrar e iterar os
+elementos de uma array um por um
+• Ao clicar no ultimo botão deve mostrar/ocultar o
+texto “quatro” -->
