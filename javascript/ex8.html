@@ -1,15 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <script>
-</body>
-</html>
-<!-- Crie um formulário HTML contendo campo para inserir um número e um botão para
-envio do formulário. Através do botão, chame uma função JavaScript que calcule o
-fatorial do número.
-Apresente o resultado em um campo de texto no próprio HTML. -->
+<!DOCTYPE html> <!-- Declaração do tipo de documento HTML -->
+<html lang="en"> <!-- Início do documento HTML com idioma inglês -->
+<head> <!-- Início do cabeçalho -->
+    <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configuração para responsividade -->
+    <title>Exercício 8</title> <!-- Título da página -->
+</head> <!-- Fim do cabeçalho -->
+<body> <!-- Início do corpo da página -->
+        <input type="text" id="n" placeholder="Digite um número"> <!-- Campo de entrada para o número -->
+        <button onclick="fator()">Calcular</button> <!-- Botão que chama a função fator() ao ser clicado -->
+        <input type="text"id="result" disabled placeholder="Resultado" > <!-- Campo de saída para mostrar o resultado -->
+        <script>// <!-- Início do código JavaScript -->
+            function fator(){ // Função que calcula o fatorial
+                let n=document.getElementById("n").value; // Obtém o valor digitado no campo de entrada
+                let result=1 // Inicializa a variável result com 1
+                for(let i=1;i<n;i++){ // Loop que vai de 1 até n-1
+                    result*=i+1 // Multiplica result pelo próximo número
+                document.getElementById("result").value=result // Mostra o resultado no campo de saída
+                }
+            }
+        </script> <!-- Fim do código JavaScript -->
+        <style>
+            body{
+                background-color: grey;
+            }
+            input{
+                margin: 10px;
+                padding: 10px;
+                font-size: 16px;
+                border-radius: 5px;
+                text-align: center;
+            }
+            button{
+                margin: 10px;
+                padding: 10px;
+                font-size: 16px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            #result{
+                margin: 10px;
+                padding: 10px;
+                font-size: 16px;
+                color: rgb(0, 0, 0);
+                border-radius: 5px;
+                text-align: center; 
+                background-color: rgb(190, 207, 207);
+            }
+        </style>
+</body> <!-- Fim do corpo da página -->
+</html> <!-- Fim do documento HTML -->
