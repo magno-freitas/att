@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <form>  
+        <label for="nome">Nome do alimento:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+
+        <label for="descricao">Descrição:</label><br>
+        <textarea id="descricao" name="descricao" required></textarea><br><br>
+
+        <label for="valor">Valor:</label><br>
+        <input type="number" id="valor" name="valor" step="0.01" required><br><br>
+
+        <!--Select-->
+        <label for="tipo">Tipo:</label><br>
+        <select id="tipo" name="tipo" required>
+            <option value="">Selecione</option>
+            <option value="doce">Doce</option>
+            <option value="salgado">Salgado</option>
+            <option value="bebida">Bebida</option>
+        </select><br><br>
+
+        <!--Radio-->
+        <label for="lactose">Contém lactose?</label><br>
+        <input type="radio" id="sim" name="lactose" value="sim">
+        <label for="sim">Sim</label><br>
+        <input type="radio" id="nao" name="lactose" value="nao">
+        <label for="nao">Não</label><br><br>
+
+        <label for="data_validade">Data de validade:</label><br>
+        <input type="date" id="data_validade" name="data_validade" required><br><br>
+
+        <input type="submit" value="Cadastrar">
+    </form>
+
+</body>
+</html>
