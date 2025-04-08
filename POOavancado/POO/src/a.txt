@@ -2,14 +2,7 @@ Exercícios Avançados de POO
 Para todos os exercícios dessa lista:
 Fazer método construtor, atributos privados, getters e setters, método toString, tratamento de
 exceção e Array List quando necessário.
-1)
-Faça uma classe chamada Retangulo, com os atributos altura e largura.
-Faça um método para descobrir a área e outro para descobrir o perímetro.
-Crie 5 objetos de Retangulo.
-Crie uma lista em outra classe para armazenar todos os objetos de Retangulo
-Faça um método que encontre o Retangulo com a maior área e outro que encontre o Retangulo
-com o maior perímetro
-Imprima o toString desses Retangulos
+
 2)
 Em um sistema de uma floricultura deve se guardar o nome da flor, o preço, o nome do cliente
 que comprou a flor e um boolean que determina se a flor é para presente ou não
