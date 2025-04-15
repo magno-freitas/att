@@ -1,4 +1,4 @@
-package at1;
+
 // Exercícios Avançados de POO
 // Para todos os exercícios dessa lista:
 // Fazer método construtor, atributos privados, getters e setters, método toString, tratamento de

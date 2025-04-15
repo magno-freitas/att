@@ -9,7 +9,7 @@
 // Saber o salário anual do empregado
 // Saber o nome completo do empregado
 // Modificar o salário, o parâmetro do método deve ser o percentual de aumento
-package at3;
+
 
 public class Empregado {
     private String identificacao;
