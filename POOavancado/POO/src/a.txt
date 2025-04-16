@@ -3,55 +3,6 @@ Para todos os exercícios dessa lista:
 Fazer método construtor, atributos privados, getters e setters, método toString, tratamento de
 exceção e Array List quando necessário.
 
-4)
-Crie um sistema para uma loja de materiais de construção
-Os objetos terão os atributos:
-Nome, descrição, preço, volume (tamanho), peso e quantidade em estoque
-Crie métodos para:
-Adicionar mais unidades da peça ao estoque
-Vender um produto, podendo ser vendido até o mesmo número de peças que tem no estoque
-Colocar o produto em promoção, o parâmetro do método deve ser a porcentagem do desconto
-Descubra:
-a) Qual o material mais caro
-b) Qual o material mais caro por metro cúbico
-c) Qual o material mais denso
-d) Qual o material que mais ocupa espaço no estoque
-5)
-Faça uma classe chamada Conta, com os atributos: nome do titular e saldo.
-Faça métodos para:
-Sacar dinheiro: o método deve receber a quantidade a ser sacada como parâmetro
-Depositar dinheiro: o método deve receber a quantidade a ser depositada como parâmetro
-Transferir dinheiro de uma conta para outra: o método deve receber como parâmetro o objeto
-que receberá a transferência e a quantidade a ser transferida
-6)
-O objetivo deste exercício é implementar a relação entre uma pessoa e seu endereço.
-Classe Pessoa:
-Crie os atributos de nome e Endereco, em que Endereco é uma classe
-Classe Endereco:
-Crie três atributos privados: um do tipo String para o logradouro, outro do tipo String para o
-complemento e um do tipo int para o número
-Crie objetos de Pessoa
-7)
-A Câmara Municipal de Vereadores de Blumenau pretende realizar uma estatística sobre o
-desempenho dos seus parlamentares.
-Para cada um dos vereadores, ela possui o nome, partido, quantidade de projetos
-apresentados e quantidade de projetos aprovados.
-O desempenho é calculado da seguinte forma:
-(projetos aprovados / projetos apresentados) * índice de trabalho.
-Se não apresentou nenhum projeto, o desempenho é 0 (zero).
-O índice de trabalho é definido pela seguinte tabela:
-Projetos apresentados Índice de trabalho
-01 – 05 0,80
-06 – 10 1,00
-11 – 17 1,08
-acima de 17 1,22
-Descubra:
-a) O total de projetos apresentados e de aprovados na câmara
-b) O vereador com mais projetos aprovados
-c) O vereador com maior desempenho
-d) Os vereadores cujo desempenho seja maior que o desempenho médio de toda a câmara
-Desafio:
-Descubra o partido com o melhor desempenho médio
 8)
 Um matemático está necessitando de várias funções relacionadas a um número inteiro
 positivo.
