@@ -1,4 +1,6 @@
-package at8;
+
+
+import java.util.ArrayList;
 
 public class InteiroPositivo {
     private int x;
@@ -34,15 +36,18 @@ public class InteiroPositivo {
         }
         return "Divisores: " + divisores.toString() + "\nQuantidade de divisores: " + cont;
     }
-    public int fibonacci() {
-        int a = 1;
+    public ArrayList<Integer> fibonacci() {
+        ArrayList<Integer> fibList = new ArrayList<>();
+        int a = 0;
         int b = 1;
-        for (int i = 3; i <= x; i++) {
-            int c = a + b;
+       
+        for (int i = 0; i < x; i++) {
+            fibList.add(b);
+            int c = b;
             a = b;
-            b = c;
+            b = c + a;
         }
-        return b;
+        return fibList;
     }
     @Override
     public String toString() {
