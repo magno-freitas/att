@@ -2,6 +2,7 @@ public class Computador {
     private String nSerie;
     private String modeloProcessador;
     private double clockProcessador;
+    private boolean overclock;
    
     private double armazenamento;
     private double memoria; 

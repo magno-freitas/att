@@ -1,7 +1,4 @@
-
-
-import java.util.ArrayList; // Importa a classe ArrayList para usar listas dinâmicas
-
+import java.util.ArrayList;
 public class Cadastro { // Declaração da classe Cadastro
     private ArrayList<Computador> computadores = new ArrayList<>(); // Lista para armazenar objetos Computador
     private int salas = 4;
