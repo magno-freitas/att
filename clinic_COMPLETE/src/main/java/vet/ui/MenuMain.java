@@ -8,37 +8,41 @@ public class MenuMain {
     
     public static void main(String[] args) {
         try {
-            // Start services
             serviceFactory.startServices();
             
-            // Run main menu loop
             while (true) {
                 MainMenu.showMainMenu();
                 int option = MenuHandlers.readInt("Opção: ");
                 
                 switch (option) {
-                    case 1: // Clients
-                        handleClientMenu();
+                    case 1: // Clientes e Pets
+                        handleClientPetMenu();
                         break;
-                    case 2: // Pets
-                        handlePetMenu();
+                    case 2: // Atendimentos
+                        handleAttendanceMenu();
                         break;
-                    case 3: // Appointments
-                        handleAppointmentMenu();
-                        break;
-                    case 4: // Medical Records
+                    case 3: // Prontuários
                         handleMedicalRecordMenu();
                         break;
-                    case 5: // Vaccines
-                        handleVaccineMenu();
+                    case 4: // Vacinação
+                        handleVaccinationMenu();
                         break;
-                    case 6: // Reports
+                    case 5: // Exames
+                        handleExamMenu();
+                        break;
+                    case 6: // Cirurgias
+                        handleSurgeryMenu();
+                        break;
+                    case 7: // Financeiro
+                        handleFinancialMenu();
+                        break;
+                    case 8: // Relatórios
                         handleReportMenu();
                         break;
-                    case 7: // Settings
+                    case 9: // Configurações
                         handleSettingsMenu();
                         break;
-                    case 8: // Exit
+                    case 0: // Sair
                         System.out.println("Encerrando o sistema...");
                         return;
                     default:
@@ -49,65 +53,32 @@ public class MenuMain {
             System.err.println("Erro fatal: " + e.getMessage());
             e.printStackTrace();
         } finally {
-            // Cleanup
             serviceFactory.shutdownServices();
         }
     }
-    
-    private static void handleClientMenu() {
+
+    private static void handleClientPetMenu() {
         while (true) {
-            MainMenu.showClientMenu();
+            MainMenu.showClientPetMenu();
             try {
                 int option = MenuHandlers.readInt("Opção: ");
                 switch (option) {
-                    case 1:
+                    case 1: // Cadastrar Cliente
                         MenuHandlers.handleAddClient();
                         break;
-                    case 2:
-                        // Search client...
-                        break;
-                    case 3:
-                        // Update client...
-                        break;
-                    case 4:
-                        // List clients...
-                        break;
-                    case 5:
-                        return;
-                    default:
-                        System.out.println("Opção inválida!");
-                }
-            } catch (Exception e) {
-                System.out.println("Erro: " + e.getMessage());
-            }
-        }
-    }
-    
-    private static void handlePetMenu() {
-        while (true) {
-            MainMenu.showPetMenu();
-            try {
-                int option = MenuHandlers.readInt("Opção: ");
-                switch (option) {
-                    case 1:
+                    case 2: // Cadastrar Pet
                         MenuHandlers.handleAddPet();
                         break;
-                    case 2:
-                        // Search pet...
+                    case 3: // Buscar Cliente/Pet
+                        MenuHandlers.handleSearchClientPet();
                         break;
-                    case 3:
-                        // Update pet...
+                    case 4: // Atualizar Dados
+                        MenuHandlers.handleUpdateClientPet();
                         break;
-                    case 4:
-                        // List pets...
+                    case 5: // Histórico Completo
+                        MenuHandlers.handleViewHistory();
                         break;
-                    case 5:
-                        // Vaccine history...
-                        break;
-                    case 6:
-                        // Medical history...
-                        break;
-                    case 7:
+                    case 0: // Voltar
                         return;
                     default:
                         System.out.println("Opção inválida!");
@@ -117,29 +88,26 @@ public class MenuMain {
             }
         }
     }
-    
-    private static void handleAppointmentMenu() {
+
+    private static void handleAttendanceMenu() {
         while (true) {
-            MainMenu.showAppointmentMenu();
+            MainMenu.showAttendanceMenu();
             try {
                 int option = MenuHandlers.readInt("Opção: ");
                 switch (option) {
-                    case 1:
-                        MenuHandlers.handleScheduleAppointment();
+                    case 1: // Novo Atendimento
+                        MenuHandlers.handleNewAttendance();
                         break;
-                    case 2:
-                        // Cancel appointment...
+                    case 2: // Consultas do Dia
+                        MenuHandlers.handleTodayAppointments();
                         break;
-                    case 3:
-                        // Reschedule...
+                    case 3: // Emergências
+                        MenuHandlers.handleEmergency();
                         break;
-                    case 4:
-                        // List today's appointments...
+                    case 4: // Internações
+                        MenuHandlers.handleHospitalization();
                         break;
-                    case 5:
-                        // Search appointment...
-                        break;
-                    case 6:
+                    case 0: // Voltar
                         return;
                     default:
                         System.out.println("Opção inválida!");
@@ -149,7 +117,7 @@ public class MenuMain {
             }
         }
     }
-    
+
     private static void handleMedicalRecordMenu() {
         while (true) {
             MainMenu.showMedicalRecordMenu();
@@ -179,7 +147,7 @@ public class MenuMain {
         }
     }
     
-    private static void handleVaccineMenu() {
+    private static void handleVaccinationMenu() {
         while (true) {
             MainMenu.showVaccineMenu();
             try {
@@ -207,7 +175,85 @@ public class MenuMain {
             }
         }
     }
-    
+
+    private static void handleExamMenu() {
+        while (true) {
+            MainMenu.showExamMenu();
+            try {
+                int option = MenuHandlers.readInt("Opção: ");
+                switch (option) {
+                    case 1: // Agendar Exame
+                        MenuHandlers.handleScheduleExam();
+                        break;
+                    case 2: // Consultar Exames
+                        MenuHandlers.handleConsultExams();
+                        break;
+                    case 3: // Resultados Pendentes
+                        MenuHandlers.handlePendingResults();
+                        break;
+                    case 0: // Voltar
+                        return;
+                    default:
+                        System.out.println("Opção inválida!");
+                }
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
+        }
+    }
+
+    private static void handleSurgeryMenu() {
+        while (true) {
+            MainMenu.showSurgeryMenu();
+            try {
+                int option = MenuHandlers.readInt("Opção: ");
+                switch (option) {
+                    case 1: // Agendar Cirurgia
+                        MenuHandlers.handleScheduleSurgery();
+                        break;
+                    case 2: // Consultar Cirurgias
+                        MenuHandlers.handleConsultSurgeries();
+                        break;
+                    case 3: // Cirurgias Pendentes
+                        MenuHandlers.handlePendingSurgeries();
+                        break;
+                    case 0: // Voltar
+                        return;
+                    default:
+                        System.out.println("Opção inválida!");
+                }
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
+        }
+    }
+
+    private static void handleFinancialMenu() {
+        while (true) {
+            MainMenu.showFinancialMenu();
+            try {
+                int option = MenuHandlers.readInt("Opção: ");
+                switch (option) {
+                    case 1: // Gerar Fatura
+                        MenuHandlers.handleGenerateInvoice();
+                        break;
+                    case 2: // Consultar Faturas
+                        MenuHandlers.handleConsultInvoices();
+                        break;
+                    case 3: // Pagamentos Pendentes
+                        MenuHandlers.handlePendingPayments();
+                        break;
+                    case 0: // Voltar
+                        return;
+                    default:
+                        System.out.println("Opção inválida!");
+                }
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
+        }
+    }
+
     private static void handleReportMenu() {
         while (true) {
             MainMenu.showReportMenu();

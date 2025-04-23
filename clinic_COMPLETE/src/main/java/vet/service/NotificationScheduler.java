@@ -12,25 +12,19 @@ import main.java.vet.NotificationService;
 import main.java.vet.model.Appointment;
 import main.java.vet.model.ServiceType;
 
-public class NotificationScheduler<ClientService, PetService, Pet> {
+public class NotificationScheduler {
     private final ScheduledExecutorService scheduler;
     private final NotificationService notificationService;
     private final ClientService clientService;
     private final PetService petService;
 
-    public NotificationScheduler() {
+    public NotificationScheduler(NotificationService notificationService, 
+                               ClientService clientService,
+                               PetService petService) {
         this.scheduler = Executors.newScheduledThreadPool(1);
-        this.notificationService = new NotificationService();
-        this.clientService = new ClientService();
-        this.petService = new PetService();
-    }
-
-    public NotificationScheduler(NotificationService notificationService2) {
-        this.scheduler = null;
-        this.notificationService = new NotificationService();
-        this.clientService = null;
-        //TODO Auto-generated constructor stub
-        this.petService = null;
+        this.notificationService = notificationService;
+        this.clientService = clientService;
+        this.petService = petService;
     }
 
     public void start() {

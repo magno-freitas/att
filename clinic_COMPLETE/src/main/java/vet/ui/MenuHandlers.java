@@ -15,6 +15,7 @@ import main.java.vet.model.Appointment;
 import main.java.vet.model.ServiceType;
 import main.java.vet.service.*;
 import main.java.vet.util.ValidationUtils;
+import vet.model.Pet;
 
 
 
@@ -304,6 +305,94 @@ public class MenuHandlers {
             System.out.println("Erro de validação: " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Erro ao gerar relatórios: " + e.getMessage());
+        }
+    }
+
+    public static void handleNewAttendance() {
+        try {
+            System.out.println("\n=== Novo Atendimento ===");
+            
+            // Identificação do Pet
+            System.out.print("ID do Pet: ");
+            int petId = Integer.parseInt(scanner.nextLine());
+            Pet pet = serviceFactory.getPetService().getPetById(petId);
+            if (pet == null) {
+                throw new ValidationException("Pet não encontrado!");
+            }
+
+            // Tipo de Atendimento
+            System.out.println("\nTipo de Atendimento:");
+            System.out.println("1. Consulta de Rotina");
+            System.out.println("2. Emergência");
+            System.out.println("3. Retorno");
+            System.out.println("4. Procedimento");
+            System.out.print("Escolha o tipo: ");
+            int type = Integer.parseInt(scanner.nextLine());
+
+            // Sintomas/Queixa
+            System.out.print("\nQueixa principal: ");
+            String mainComplaint = scanner.nextLine();
+
+            // Observações adicionais
+            System.out.print("Observações: ");
+            String notes = scanner.nextLine();
+
+            // Criar atendimento
+            Attendance attendance = new Attendance();
+            attendance.setPetId(petId);
+            attendance.setType(type);
+            attendance.setMainComplaint(mainComplaint);
+            attendance.setNotes(notes);
+            attendance.setStatus("AGUARDANDO");
+            attendance.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+
+            serviceFactory.getAttendanceService().createAttendance(attendance);
+            System.out.println("Atendimento registrado com sucesso!");
+
+        } catch (Exception e) {
+            System.out.println("Erro ao registrar atendimento: " + e.getMessage());
+        }
+    }
+
+    public static void handleEmergency() {
+        try {
+            System.out.println("\n=== Atendimento de Emergência ===");
+            
+            // Dados básicos do pet (mesmo que não cadastrado)
+            System.out.print("Nome do Pet: ");
+            String petName = scanner.nextLine();
+            
+            System.out.print("Nome do Tutor: ");
+            String ownerName = scanner.nextLine();
+            
+            System.out.print("Telefone de Contato: ");
+            String phone = scanner.nextLine();
+
+            // Informações da emergência
+            System.out.print("Descrição da Emergência: ");
+            String emergency = scanner.nextLine();
+            
+            System.out.println("\nNível de Urgência:");
+            System.out.println("1. Crítico");
+            System.out.println("2. Grave");
+            System.out.println("3. Moderado");
+            System.out.print("Escolha o nível: ");
+            int urgencyLevel = Integer.parseInt(scanner.nextLine());
+
+            // Criar atendimento de emergência
+            EmergencyAttendance emergency = new EmergencyAttendance();
+            emergency.setPetName(petName);
+            emergency.setOwnerName(ownerName);
+            emergency.setPhone(phone);
+            emergency.setDescription(emergency);
+            emergency.setUrgencyLevel(urgencyLevel);
+            emergency.setStatus("PRIORITÁRIO");
+
+            serviceFactory.getEmergencyService().createEmergency(emergency);
+            System.out.println("Emergência registrada com sucesso!");
+
+        } catch (Exception e) {
+            System.out.println("Erro ao registrar emergência: " + e.getMessage());
         }
     }
 

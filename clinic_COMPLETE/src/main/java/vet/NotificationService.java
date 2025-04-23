@@ -3,84 +3,130 @@ package main.java.vet;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import javax.mail.Part;
-
-import com.mysql.cj.xdevapi.Client;
-
-import main.java.vet.model.Appointment;
+import main.java.vet.model.*;
 import main.java.vet.service.EmailService;
 import main.java.vet.util.DatabaseConnection;
+import main.java.vet.exception.NotificationException;
 
 public class NotificationService {
-    private EmailService emailService;
-    private SMSService smsService;
+    private static final Logger logger = Logger.getLogger(NotificationService.class.getName());
+    private final EmailService emailService;
+    private final SMSService smsService;
     
-    public NotificationService() {
-        this.emailService = new EmailService();
-        this.smsService = new SMSService();
+    public NotificationService(EmailService emailService, SMSService smsService) {
+        this.emailService = emailService;
+        this.smsService = smsService;
     }
     
-    public NotificationService(EmailService emailService2, SMSService smsService2) {
-        //TODO Auto-generated constructor stub
-    }
-
-    public void sendAppointmentReminder(Appointment appointment, Client client) {
-        String message = String.format(
-            "Lembrete: Você tem um agendamento para %s em %s para o pet %s.",
-            appointment.getService(),
-            appointment.getStartTime(),
-            getPetName(appointment.getPetId())
-        );
-        
-        // Send both email and SMS
-        emailService.sendEmail(client.getEmail(), "Lembrete de Agendamento", message);
-        smsService.sendSMS(client.getPhone(), message);
-        
-        // Log the notification
-        logNotification(appointment.getAppointmentId(), "REMINDER", message);
-    }
-    
-    public void sendVaccinationDueReminder(Part pet, Client client, String vaccineName) {
-        String message = String.format(
-            "Olá! A vacina %s do seu pet %s está próxima do vencimento. Por favor, agende uma visita.",
-            vaccineName,
-            pet.getFileName()
-        );
-        
-        emailService.sendEmail(client.getEmail(), "Lembrete de Vacinação", message);
-        smsService.sendSMS(client.getPhone(), message);
-        
-        logNotification(pet.getPetId(), "VACCINE_DUE", message);
+    public void sendAppointmentReminder(Appointment appointment, Client client) throws NotificationException {
+        try {
+            String message = String.format(
+                "Reminder: You have an appointment for %s on %s for pet %s.",
+                appointment.getServiceType().name(),
+                appointment.getStartTime(),
+                getPetName(appointment.getPetId())
+            );
+            
+            // Send notifications
+            sendNotifications(client, "Appointment Reminder", message);
+            
+            // Log the notification
+            logNotification(appointment.getAppointmentId(), "REMINDER", message);
+            
+            logger.info("Appointment reminder sent successfully for appointment ID: " + appointment.getAppointmentId());
+        } catch (Exception e) {
+            String errorMsg = "Failed to send appointment reminder: " + e.getMessage();
+            logger.severe(errorMsg);
+            throw new NotificationException(errorMsg, e);
+        }
     }
     
-    public void sendAppointmentConfirmation(Appointment appointment, Client client) {
-        String message = String.format(
-            "Seu agendamento para %s em %s foi confirmado.",
-            appointment.getService(),
-            appointment.getStartTime()
-        );
-        
-        emailService.sendEmail(client.getEmail(), "Confirmação de Agendamento", message);
-        smsService.sendSMS(client.getPhone(), message);
-        
-        logNotification(appointment.getAppointmentId(), "CONFIRMATION", message);
+    public void sendVaccinationDueReminder(Pet pet, Client client, String vaccineName) throws NotificationException {
+        try {
+            String message = String.format(
+                "Hello! The %s vaccine for your pet %s is due soon. Please schedule a visit.",
+                vaccineName,
+                pet.getName()
+            );
+            
+            sendNotifications(client, "Vaccination Reminder", message);
+            logNotification(pet.getId(), "VACCINE_DUE", message);
+            
+            logger.info("Vaccination reminder sent successfully for pet ID: " + pet.getId());
+        } catch (Exception e) {
+            String errorMsg = "Failed to send vaccination reminder: " + e.getMessage();
+            logger.severe(errorMsg);
+            throw new NotificationException(errorMsg, e);
+        }
     }
     
-    public void sendCancellationNotification(Appointment appointment, Client client) {
-        String message = String.format(
-            "Seu agendamento para %s em %s foi cancelado.",
-            appointment.getService(),
-            appointment.getStartTime()
-        );
-        
-        emailService.sendEmail(client.getEmail(), "Cancelamento de Agendamento", message);
-        smsService.sendSMS(client.getPhone(), message);
-        
-        logNotification(appointment.getAppointmentId(), "CANCELLATION", message);
+    public void sendAppointmentConfirmation(int appointmentId, String email, Timestamp startTime) throws NotificationException {
+        try {
+            String message = String.format(
+                "Your appointment has been confirmed for %s.",
+                startTime.toString()
+            );
+            
+            emailService.sendEmail(email, "Appointment Confirmation", message);
+            logNotification(appointmentId, "CONFIRMATION", message);
+            
+            logger.info("Appointment confirmation sent successfully for appointment ID: " + appointmentId);
+        } catch (Exception e) {
+            String errorMsg = "Failed to send appointment confirmation: " + e.getMessage();
+            logger.severe(errorMsg);
+            throw new NotificationException(errorMsg, e);
+        }
     }
     
-    private void logNotification(int referenceId, String type, String message) {
+    public void sendCancellationNotification(int appointmentId, String email) throws NotificationException {
+        try {
+            String message = "Your appointment has been cancelled.";
+            
+            emailService.sendEmail(email, "Appointment Cancellation", message);
+            logNotification(appointmentId, "CANCELLATION", message);
+            
+            logger.info("Cancellation notification sent successfully for appointment ID: " + appointmentId);
+        } catch (Exception e) {
+            String errorMsg = "Failed to send cancellation notification: " + e.getMessage();
+            logger.severe(errorMsg);
+            throw new NotificationException(errorMsg, e);
+        }
+    }
+    
+    private void sendNotifications(Client client, String subject, String message) throws NotificationException {
+        try {
+            // Try to send both email and SMS
+            boolean emailSent = false;
+            boolean smsSent = false;
+            Exception lastError = null;
+            
+            try {
+                emailService.sendEmail(client.getEmail(), subject, message);
+                emailSent = true;
+            } catch (Exception e) {
+                lastError = e;
+                logger.warning("Failed to send email: " + e.getMessage());
+            }
+            
+            try {
+                smsService.sendSMS(client.getPhone(), message);
+                smsSent = true;
+            } catch (Exception e) {
+                lastError = e;
+                logger.warning("Failed to send SMS: " + e.getMessage());
+            }
+            
+            if (!emailSent && !smsSent) {
+                throw new NotificationException("Failed to send both email and SMS notifications", lastError);
+            }
+        } catch (Exception e) {
+            throw new NotificationException("Error sending notifications: " + e.getMessage(), e);
+        }
+    }
+    
+    private void logNotification(int referenceId, String type, String message) throws SQLException {
         String query = "INSERT INTO notification_log (reference_id, type, message, sent_at) VALUES (?, ?, ?, NOW())";
         
         try (Connection conn = DatabaseConnection.getConnection();
@@ -91,19 +137,21 @@ public class NotificationService {
             stmt.setString(3, message);
             
             stmt.executeUpdate();
+            logger.info("Notification logged successfully for reference ID: " + referenceId);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.severe("Failed to log notification: " + e.getMessage());
+            throw e;
         }
     }
     
-    private String getPetName(int petId) {
+    private String getPetName(int petId) throws SQLException {
         try {
             PetService petService = new PetService();
             Pet pet = petService.getPetById(petId);
             return pet != null ? pet.getName() : "Unknown";
         } catch (SQLException e) {
-            e.printStackTrace();
-            return "Unknown";
+            logger.warning("Failed to get pet name for ID " + petId + ": " + e.getMessage());
+            throw e;
         }
     }
     
@@ -126,18 +174,12 @@ public class NotificationService {
                 log.setSentAt(rs.getTimestamp("sent_at"));
                 logs.add(log);
             }
+            
+            logger.info("Retrieved " + logs.size() + " recent notifications");
+            return logs;
+        } catch (SQLException e) {
+            logger.severe("Failed to retrieve recent notifications: " + e.getMessage());
+            throw e;
         }
-        
-        return logs;
-    }
-
-    public <Pet> void sendVaccinationDueReminder(Pet pet, Client client, String vaccineName) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sendVaccinationDueReminder'");
-    }
-
-    public <Client> void sendAppointmentConfirmation(Appointment appointment, Client client) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sendAppointmentConfirmation'");
     }
 }

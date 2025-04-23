@@ -61,11 +61,15 @@ public class SecurityService {
         return salt;
     }
 
+    // Import javax.crypto.SecretKeyFactory for secure key generation
+    // This package provides classes and interfaces for cryptographic operations
+    import javax.crypto.SecretKeyFactory;
+
     private byte[] hashPassword(char[] password, byte[] salt) throws Exception {
         PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
         Arrays.fill(password, Character.MIN_VALUE);
         
-        SecretKeyFactory skf = SecretKeyFactory.getInstance(ALGORITHM);
+        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         return skf.generateSecret(spec).getEncoded();
     }
 }

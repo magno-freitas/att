@@ -11,7 +11,21 @@ import main.java.vet.DatabaseConnection;
 
 public class EmailService {
     private static final String FROM_EMAIL = "clinica@veterinaria.com";
-    private static final String EMAIL_PASSWORD = "your_password_here"; // In production, use secure configuration
+// Import statements
+// import com.amazonaws.services.secretsmanager.AWSSecretsManager;
+// import com.amazonaws.services.secretsmanager.AWSSecretsManagerClientBuilder;
+// import com.amazonaws.services.secretsmanager.model.GetSecretValueRequest;
+// import com.amazonaws.services.secretsmanager.model.GetSecretValueResult;
+
+private static final String EMAIL_PASSWORD = getSecretFromAWS("email_password_secret_name");
+
+// Method to retrieve secret from AWS Secrets Manager
+private static String getSecretFromAWS(String secretName) {
+    AWSSecretsManager client = AWSSecretsManagerClientBuilder.defaultClient();
+    GetSecretValueRequest getSecretValueRequest = new GetSecretValueRequest().withSecretId(secretName);
+    GetSecretValueResult getSecretValueResult = client.getSecretValue(getSecretValueRequest);
+    return getSecretValueResult.getSecretString();
+}
     private Properties props;
     private Session session;
 

@@ -3,17 +3,23 @@ package main.java.vet.payment;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import main.java.vet.*;
 import main.java.vet.util.DatabaseConnection;
+import main.java.vet.util.ConfigurationManager;
 
 public class PaymentGatewayService {
-    private final String API_KEY = "your-api-key";
-    private final String API_SECRET = "your-api-secret";
-    private final String GATEWAY_URL = "https://api.payment-gateway.com";
+    private static final Logger logger = Logger.getLogger(PaymentGatewayService.class.getName());
+    private final ConfigurationManager configManager;
+
+    public PaymentGatewayService(ConfigurationManager configManager) {
+        this.configManager = configManager;
+    }
 
     public PaymentResult processPayment(PaymentRequest request) throws PaymentException {
         try {
+            String apiKey = configManager.getSecureProperty("payment.gateway.apiKey");
             // Simulate payment gateway API call
             String transactionId = UUID.randomUUID().toString();
             
@@ -26,7 +32,8 @@ public class PaymentGatewayService {
                 "Payment processed successfully"
             );
         } catch (Exception e) {
-            throw new PaymentException("Failed to process payment: " + e.getMessage());
+            logger.severe("Payment processing failed: " + e.getMessage());
+            throw new PaymentException("Failed to process payment", e); 
         }
     }
 

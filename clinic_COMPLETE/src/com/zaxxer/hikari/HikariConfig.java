@@ -1150,6 +1150,16 @@ import java.util.Properties;
        if (sealed) throw new IllegalStateException("The configuration of the pool is sealed once started. Use HikariConfigMXBean for runtime changes.");
     }
  
+    // Import statements
+    // import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
+    // import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
+    // AWS SDK for Java v2 is used to interact with AWS Secrets Manager
+
+    // Import statements
+    // import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
+    // import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
+    // AWS SDK for Java v2 is used to interact with AWS Secrets Manager
+
     private void logConfiguration()
     {
        LOGGER.debug("{} - configuration:", poolName);
@@ -1159,7 +1169,7 @@ import java.util.Properties;
              var value = PropertyElf.getProperty(prop, this);
              if ("dataSourceProperties".equals(prop)) {
                 var dsProps = PropertyElf.copyProperties(dataSourceProperties);
-                dsProps.setProperty("password", "<masked>");
+                dsProps.setProperty("password", getPasswordFromSecretsManager());
                 value = dsProps;
              }
  
@@ -1190,6 +1200,27 @@ import java.util.Properties;
              // continue
           }
        }
+    }
+
+    private String getPasswordFromSecretsManager() {
+        String secretName = "your-secret-name";
+        SecretsManagerClient client = SecretsManagerClient.create();
+        GetSecretValueRequest getSecretValueRequest = GetSecretValueRequest.builder()
+            .secretId(secretName)
+            .build();
+        return client.getSecretValue(getSecretValueRequest).secretString();
+    }
+
+    private String getPasswordFromSecretsManager() {
+        try (SecretsManagerClient secretsClient = SecretsManagerClient.create()) {
+            GetSecretValueRequest getSecretValueRequest = GetSecretValueRequest.builder()
+                .secretId("your-secret-id")
+                .build();
+            return secretsClient.getSecretValue(getSecretValueRequest).secretString();
+        } catch (Exception e) {
+            LOGGER.error("Error retrieving password from Secrets Manager", e);
+            return "<error>";
+        }
     }
  
     private void loadProperties(String propertyFileName)

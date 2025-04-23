@@ -50,13 +50,36 @@ public class AppointmentValidator {
     }
 
     public void validateAppointment(Appointment appointment) throws SQLException {
+        // Basic validation
+        if (appointment == null) {
+            throw new IllegalArgumentException("Appointment cannot be null");
+        }
         if (appointment.getServiceType() == null) {
-            throw new IllegalArgumentException("Tipo de serviço não pode ser nulo");
+            throw new IllegalArgumentException("Service type cannot be null");
+        }
+        if (appointment.getStartTime() == null) {
+            throw new IllegalArgumentException("Start time cannot be null");
+        }
+        if (appointment.getClientId() <= 0) {
+            throw new IllegalArgumentException("Invalid client ID");
+        }
+        if (appointment.getPetId() <= 0) {
+            throw new IllegalArgumentException("Invalid pet ID");
         }
         
+        // Validate business hours
         validateBusinessHours(appointment.getStartTime());
+        
+        // Validate that start time is in the future
+        LocalDateTime now = LocalDateTime.now();
+        if (appointment.getStartTime().toLocalDateTime().isBefore(now)) {
+            throw new IllegalArgumentException("Appointment cannot be scheduled in the past");
+        }
+        
+        // Validate time slot availability
         validateTimeSlot(appointment);
         
+        // Validate specific service requirements
         switch (appointment.getServiceType()) {
             case BANHO:
             case TOSA:
@@ -65,11 +88,47 @@ public class AppointmentValidator {
             case VACINA:
                 validateVaccineAvailability();
                 validateVetAvailability(appointment);
+                validateVaccinationHistory(appointment);
                 break;
             case CONSULTA:
                 validateVetAvailability(appointment);
                 validateConsultationRoomAvailability(appointment);
+                validatePetHealthStatus(appointment);
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid service type");
+        }
+    }
+
+    private void validatePetHealthStatus(Appointment appointment) throws SQLException {
+        // Check if pet has any critical health conditions that need special attention
+        String query = "SELECT health_status FROM pet_health_records WHERE pet_id = ? ORDER BY record_date DESC LIMIT 1";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, appointment.getPetId());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String healthStatus = rs.getString("health_status");
+                if ("CRITICAL".equals(healthStatus)) {
+                    throw new SQLException("Pet requires special medical attention. Please contact the clinic.");
+                }
+            }
+        }
+    }
+
+    private void validateVaccinationHistory(Appointment appointment) throws SQLException {
+        // Check if pet has any contraindications for vaccination
+        String query = "SELECT reaction_history FROM vaccine_records WHERE pet_id = ? AND reaction_history IS NOT NULL";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, appointment.getPetId());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String reactionHistory = rs.getString("reaction_history");
+                if (reactionHistory != null && !reactionHistory.isEmpty()) {
+                    throw new SQLException("Pet has history of vaccine reactions. Special consultation required.");
+                }
+            }
         }
     }
 
