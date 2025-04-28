@@ -1,4 +1,4 @@
-package main.java.vet.config;
+package vet.config;
 
 public class DatabaseConfig {
     private static final ConfigurationManager config = ConfigurationManager.getInstance();

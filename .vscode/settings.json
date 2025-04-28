@@ -2,5 +2,6 @@
     "java.debug.settings.onBuildFailureProceed": true,
     "java.project.sourcePaths": [
         "POOavancado"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

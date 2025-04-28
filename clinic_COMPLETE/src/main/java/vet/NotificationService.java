@@ -1,12 +1,14 @@
 package main.java.vet;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import main.java.vet.model.*;
 import main.java.vet.service.EmailService;
+import main.java.vet.service.PetService;
 import main.java.vet.util.DatabaseConnection;
 import main.java.vet.exception.NotificationException;
 
@@ -62,23 +64,21 @@ public class NotificationService {
         }
     }
     
-    public void sendAppointmentConfirmation(int appointmentId, String email, Timestamp startTime) throws NotificationException {
+public void sendAppointmentConfirmation(Appointment appointment, Client client) {
+        String message = String.format(
+            "Olá %s, sua consulta foi agendada para %s",
+            client.getName(),
+            new SimpleDateFormat("dd/MM/yyyy HH:mm").format(appointment.getStartTime())
+        );
+        
         try {
-            String message = String.format(
-                "Your appointment has been confirmed for %s.",
-                startTime.toString()
-            );
-            
-            emailService.sendEmail(email, "Appointment Confirmation", message);
-            logNotification(appointmentId, "CONFIRMATION", message);
-            
-            logger.info("Appointment confirmation sent successfully for appointment ID: " + appointmentId);
+            emailService.sendEmail(client.getEmail(), "Confirmação de Agendamento", message);
+            smsService.sendSMS(client.getPhone(), message);
         } catch (Exception e) {
-            String errorMsg = "Failed to send appointment confirmation: " + e.getMessage();
-            logger.severe(errorMsg);
-            throw new NotificationException(errorMsg, e);
+            logger.severe("Erro ao enviar notificação");
         }
     }
+
     
     public void sendCancellationNotification(int appointmentId, String email) throws NotificationException {
         try {
@@ -181,5 +181,7 @@ public class NotificationService {
             logger.severe("Failed to retrieve recent notifications: " + e.getMessage());
             throw e;
         }
+        
     }
+    
 }

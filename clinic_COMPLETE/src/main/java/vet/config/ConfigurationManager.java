@@ -1,4 +1,4 @@
-package main.java.vet.config;
+package vet.config;
 
 import java.io.FileInputStream;
 import java.util.Properties;

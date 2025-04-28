@@ -1,6 +1,7 @@
 package main.java.vet.ui;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,6 +17,7 @@ import main.java.vet.model.ServiceType;
 import main.java.vet.service.*;
 import main.java.vet.util.ValidationUtils;
 import vet.model.Pet;
+import main.java.vet.model.Client;
 
 
 
@@ -26,7 +28,7 @@ public class MenuHandlers {
     private static final ServiceFactory serviceFactory = ServiceFactory.getInstance();
 
     // Client Management
-    public static <Client> void handleAddClient() {
+    public static void handleAddClient() {
         try {
             System.out.println("\n=== Cadastro de Cliente ===");
             
@@ -45,21 +47,26 @@ public class MenuHandlers {
             System.out.print("Endereço: ");
             String address = scanner.nextLine();
             
-            Client client = new Client();
-            client.setName(name);
-            client.setEmail(email);
-            client.setPhone(phone);
-            client.setAddress(address);
-            
-            serviceFactory.getClientService().addClient(client);
-            System.out.println("Cliente cadastrado com sucesso!");
-            
-        } catch (ValidationException e) {
-            System.out.println("Erro de validação: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Erro ao cadastrar cliente: " + e.getMessage());
-        }
+              ValidationUtils.validateEmail(email); // Add email validation
+        ValidationUtils.validatePhone(phone); // Add phone validation
+        
+        Client client = new Client();
+        client.setName(name);
+        client.setEmail(email);
+        client.setPhone(phone);
+        client.setAddress(address);
+        
+        serviceFactory.getClientService().addClient(client);
+        System.out.println("Cliente cadastrado com sucesso!");
+        
+    } catch (ValidationException e) {
+        System.err.println("Erro de validação: " + e.getMessage());
+    } catch (SQLException e) {
+        System.err.println("Erro de banco de dados: " + e.getMessage());
+    } catch (Exception e) {
+        System.err.println("Erro inesperado: " + e.getMessage());
     }
+}
 
     // Pet Management
     public static <Client> void handleAddPet() {

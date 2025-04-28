@@ -15,17 +15,6 @@
     </properties>
 
     <dependencies>
-    <dependencies>
-    <dependency>
-        <groupId>com.zaxxer</groupId>
-        <artifactId>HikariCP</artifactId>
-        <version>5.0.1</version>
-    </dependency>
-    <dependency>
-        <groupId>com.zaxxer</groupId>
-        <artifactId>HikariCP</artifactId>
-        <version>3.3.1</version>
-    </dependency>
         <!-- Database -->
         <dependency>
             <groupId>mysql</groupId>
@@ -83,12 +72,6 @@
             <version>1.4.200</version>
             <scope>test</scope>
         </dependency>
-    
-      <dependency>
-        <groupId>com.zaxxer</groupId>
-        <artifactId>HikariCP</artifactId>
-        <version>3.3.1</version>
-      </dependency>
     </dependencies>
 
     <build>
@@ -119,7 +102,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>main.java.vet.Main</mainClass>
+                            <mainClass>vet.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -135,3 +118,4 @@
         </plugins>
     </build>
 </project>
+

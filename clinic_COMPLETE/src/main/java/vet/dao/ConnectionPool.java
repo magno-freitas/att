@@ -1,9 +1,9 @@
-package main.java.vet.dao;
+package vet.dao;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import main.java.vet.config.DatabaseConfig;
+import vet.config.DatabaseConfig;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,6 +21,11 @@ public class ConnectionPool {
             config.setPassword(DatabaseConfig.getPassword());
             config.setMaximumPoolSize(DatabaseConfig.getPoolSize());
             config.setConnectionTimeout(DatabaseConfig.getPoolTimeout());
+            
+            // Add connection pool tuning properties
+            config.addDataSourceProperty("cachePrepStmts", "true");
+            config.addDataSourceProperty("prepStmtCacheSize", "250");
+            config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
             
             dataSource = new HikariDataSource(config);
             
@@ -42,7 +47,7 @@ public class ConnectionPool {
     }
 
     public static void shutdown() {
-        if (dataSource != null) {
+        if (dataSource != null && !dataSource.isClosed()) {
             dataSource.close();
             logger.info("Connection pool shut down successfully");
         }

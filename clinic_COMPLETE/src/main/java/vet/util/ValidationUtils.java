@@ -1,6 +1,9 @@
 package main.java.vet.util;
 
 import java.util.regex.Pattern;
+
+import main.java.vet.exception.ValidationException;
+
 import java.util.regex.Matcher;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -21,9 +24,10 @@ public class ValidationUtils {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
-    public static void validateEmail(String email) {
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Email não pode ser vazio");
+      public static void validateEmail(String email) throws ValidationException {
+        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        if (!email.matches(regex)) {
+            throw new ValidationException("Email inválido");
         }
         
         Matcher matcher = EMAIL_PATTERN.matcher(email);
@@ -32,9 +36,10 @@ public class ValidationUtils {
         }
     }
     
-    public static void validatePhone(String phone) {
-        if (phone == null || phone.trim().isEmpty()) {
-            throw new IllegalArgumentException("Telefone não pode ser vazio");
+    public static void validatePhone(String phone) throws ValidationException {
+        String regex = "^\\d{10,11}$";
+        if (!phone.matches(regex)) {
+            throw new ValidationException("Telefone inválido");
         }
         
         // Remove non-numeric characters for validation
@@ -67,15 +72,15 @@ public class ValidationUtils {
         }
     }
     
-    public static void validateDateFormat(String dateStr) {
+    public static void validateDate(String date) throws ValidationException {
         try {
-            DATE_FORMAT.setLenient(false);
-            DATE_FORMAT.parse(dateStr);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Data inválida. Use o formato dd/mm/aaaa");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            sdf.parse(date);
+        } catch (ParseException e) {
+            throw new ValidationException("Data inválida");
         }
     }
-    
     public static void validateAppointmentTime(Timestamp time) {
         if (time == null) {
             throw new IllegalArgumentException("Horário não pode ser nulo");
