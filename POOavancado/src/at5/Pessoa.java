@@ -1,4 +1,4 @@
-package src.at6;
+package src.at5;
 public class Pessoa {
     private String nome;
     private Endereco endereco;

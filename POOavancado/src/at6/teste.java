@@ -1,4 +1,4 @@
-package src.at7;
+package src.at6;
 class TestaVereador {
  
     public static void main(String[] args) {
