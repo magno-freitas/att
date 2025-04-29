@@ -1,4 +1,7 @@
 package src.at5;
+
+import java.time.LocalDate;
+
 public class Pessoa {
     private String nome;
     private Endereco endereco;
@@ -31,6 +34,11 @@ public class Pessoa {
                 "nome='" + nome + '\'' +
                 ", endereco=" + endereco +
                 '}';
+    }
+
+    public LocalDate getDataNascimento() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getDataNascimento'");
     }
 }
 // Exercícios Avançados de POO
